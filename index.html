@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Challenge PO — Lucas Castillo | Ecomm-App</title>
+<style>
+  :root {
+    --primary: #1a365d;
+    --primary-light: #2b6cb0;
+    --accent: #ed8936;
+    --accent-light: #fbd38d;
+    --bg: #f7fafc;
+    --card-bg: #ffffff;
+    --text: #2d3748;
+    --text-light: #718096;
+    --border: #e2e8f0;
+    --success: #38a169;
+    --danger: #e53e3e;
+    --warning: #d69e2e;
+    --code-bg: #edf2f7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--primary);
+    box-shadow: 0 2px 12px rgba(0,0,0,.15);
+  }
+  nav .nav-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 56px;
+  }
+  nav .logo { color: #fff; font-weight: 700; font-size: 1.05rem; letter-spacing: .5px; }
+  nav .logo span { color: var(--accent); }
+  nav ul { list-style: none; display: flex; gap: .25rem; }
+  nav a {
+    color: rgba(255,255,255,.8); text-decoration: none; font-size: .82rem;
+    padding: .45rem .85rem; border-radius: 6px; transition: all .2s;
+  }
+  nav a:hover, nav a.active { background: rgba(255,255,255,.12); color: #fff; }
+
+  /* ── HERO ── */
+  .hero {
+    margin-top: 56px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: #fff; padding: 4rem 2rem 3rem; text-align: center;
+  }
+  .hero h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: .5rem; }
+  .hero .subtitle { font-size: 1.15rem; opacity: .85; margin-bottom: 1.5rem; }
+  .hero .meta { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; font-size: .9rem; opacity: .75; }
+  .hero .meta span { display: flex; align-items: center; gap: .4rem; }
+
+  /* ── SECTIONS ── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+  section { padding: 3rem 0; }
+  section:nth-child(even) { background: #fff; }
+
+  .section-header {
+    display: flex; align-items: center; gap: .75rem;
+    margin-bottom: 2rem; padding-bottom: .75rem;
+    border-bottom: 3px solid var(--accent);
+  }
+  .section-header .num {
+    background: var(--primary); color: #fff;
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: .9rem; flex-shrink: 0;
+  }
+  .section-header h2 { font-size: 1.5rem; color: var(--primary); }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,.04);
+    transition: box-shadow .2s;
+  }
+  .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+  .card h3 { color: var(--primary); margin-bottom: .75rem; font-size: 1.1rem; }
+  .card h4 { color: var(--primary-light); margin: 1rem 0 .5rem; font-size: .95rem; }
+
+  /* ── USER TABS ── */
+  .user-tabs { display: flex; gap: .5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .user-tab {
+    padding: .6rem 1.2rem; border-radius: 8px; cursor: pointer;
+    border: 2px solid var(--border); background: #fff;
+    font-weight: 600; font-size: .85rem; transition: all .2s;
+  }
+  .user-tab:hover { border-color: var(--primary-light); }
+  .user-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .user-panel { display: none; }
+  .user-panel.active { display: block; }
+
+  /* ── QUESTION BLOCK ── */
+  .question-block {
+    background: #f0f5ff; border-left: 4px solid var(--primary-light);
+    padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin-bottom: 1rem;
+  }
+  .question-block .q-label {
+    font-size: .7rem; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--primary-light); font-weight: 700; margin-bottom: .25rem;
+  }
+  .question-block .q-text { font-weight: 600; color: var(--primary); margin-bottom: .5rem; font-size: .95rem; }
+  .question-block .q-justification { font-size: .88rem; color: var(--text-light); }
+
+  /* ── PROBLEM BLOCK ── */
+  .problem-block {
+    background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+    border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem;
+  }
+  .problem-block .problem-label {
+    display: inline-block; background: var(--danger); color: #fff;
+    font-size: .7rem; padding: .2rem .6rem; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: .5rem;
+  }
+  .problem-vs {
+    display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem;
+    align-items: center; margin-top: .75rem;
+  }
+  .problem-vs .vs-box { background: #fff; padding: 1rem; border-radius: 8px; text-align: center; font-size: .88rem; }
+  .problem-vs .vs-arrow { font-size: 1.5rem; color: var(--accent); font-weight: 700; }
+
+  /* ── PRIORITY CARD ── */
+  .priority-card {
+    background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+    border: 2px solid var(--success); border-radius: 12px; padding: 1.5rem;
+  }
+  .priority-card .badge {
+    display: inline-block; background: var(--success); color: #fff;
+    padding: .25rem .75rem; border-radius: 20px; font-size: .8rem;
+    font-weight: 700; margin-bottom: .75rem;
+  }
+
+  /* ── EPIC HEADER ── */
+  .epic-header {
+    display: flex; align-items: center; gap: .75rem;
+    padding: 1rem 1.5rem; border-radius: 12px; margin-bottom: 1.25rem;
+  }
+  .epic-1 { background: linear-gradient(135deg, #ebf8ff, #bee3f8); }
+  .epic-2 { background: linear-gradient(135deg, #faf5ff, #e9d8fd); }
+  .epic-header .epic-num {
+    font-size: .7rem; text-transform: uppercase; letter-spacing: 1px;
+    font-weight: 700; opacity: .6;
+  }
+  .epic-header h3 { margin: 0; }
+
+  /* ── STORY CARD ── */
+  .story-card {
+    border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1rem;
+    overflow: hidden;
+  }
+  .story-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 1.25rem; background: #f7fafc; cursor: pointer;
+    border-bottom: 1px solid var(--border);
+  }
+  .story-header:hover { background: #edf2f7; }
+  .story-header .story-id { font-weight: 700; color: var(--primary); font-size: .9rem; }
+  .story-sp {
+    background: var(--accent); color: #fff; font-weight: 700;
+    padding: .2rem .65rem; border-radius: 20px; font-size: .8rem;
+  }
+  .story-body { padding: 1.25rem; display: none; }
+  .story-body.open { display: block; }
+  .story-format {
+    background: var(--code-bg); padding: 1rem; border-radius: 8px;
+    font-size: .9rem; margin: .75rem 0; border-left: 3px solid var(--accent);
+  }
+
+  /* ── GHERKIN ── */
+  .gherkin {
+    background: #1a202c; color: #e2e8f0; padding: 1rem 1.25rem;
+    border-radius: 8px; font-family: 'Cascadia Code', 'Fira Code', monospace;
+    font-size: .82rem; line-height: 1.8; margin: .75rem 0; overflow-x: auto;
+  }
+  .gherkin .kw { color: #68d391; font-weight: 700; }
+  .gherkin .sc { color: var(--accent); font-weight: 700; }
+  .gherkin .str { color: #90cdf4; }
+
+  /* ── CHART CONTAINERS ── */
+  .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+  .chart-box {
+    background: #fff; border: 1px solid var(--border); border-radius: 12px;
+    padding: 1.25rem; text-align: center;
+  }
+  .chart-box h4 { margin-bottom: 1rem; font-size: .95rem; color: var(--primary); }
+
+  /* ── BAR CHART (CSS) ── */
+  .bar-chart { display: flex; flex-direction: column; gap: .6rem; }
+  .bar-row { display: flex; align-items: center; gap: .75rem; }
+  .bar-label { width: 90px; text-align: right; font-size: .78rem; color: var(--text-light); font-weight: 600; }
+  .bar-track { flex: 1; background: #edf2f7; border-radius: 6px; height: 28px; position: relative; }
+  .bar-fill {
+    height: 100%; border-radius: 6px; display: flex; align-items: center;
+    padding-left: .75rem; font-size: .75rem; color: #fff; font-weight: 700;
+    transition: width .8s ease;
+  }
+  .bar-fill.epic1 { background: linear-gradient(90deg, #3182ce, #63b3ed); }
+  .bar-fill.epic2 { background: linear-gradient(90deg, #805ad5, #b794f4); }
+  .bar-fill.spike { background: linear-gradient(90deg, #718096, #a0aec0); }
+
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding: 1rem 0; }
+  .timeline-row {
+    display: grid; grid-template-columns: 100px 1fr 1fr; gap: 2px;
+    margin-bottom: 4px; align-items: center;
+  }
+  .timeline-label { font-size: .75rem; font-weight: 600; color: var(--text-light); text-align: right; padding-right: .75rem; }
+  .timeline-week { position: relative; height: 32px; }
+  .timeline-bar {
+    position: absolute; top: 4px; height: 24px; border-radius: 4px;
+    display: flex; align-items: center; padding: 0 .5rem;
+    font-size: .68rem; color: #fff; font-weight: 600; white-space: nowrap;
+  }
+  .timeline-header {
+    display: grid; grid-template-columns: 100px 1fr 1fr; gap: 2px; margin-bottom: .5rem;
+  }
+  .timeline-header span { text-align: center; font-size: .75rem; font-weight: 700; color: var(--primary); }
+
+  /* ── DECISION TABLE ── */
+  .decision-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.5rem 0; }
+  .decision-option {
+    border: 2px solid var(--border); border-radius: 12px; padding: 1.25rem;
+    position: relative; transition: all .2s;
+  }
+  .decision-option.selected { border-color: var(--success); background: #f0fff4; }
+  .decision-option .opt-label {
+    font-weight: 700; font-size: 1rem; margin-bottom: .5rem;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .decision-option .opt-badge {
+    font-size: .65rem; padding: .15rem .5rem; border-radius: 12px;
+    text-transform: uppercase; font-weight: 700;
+  }
+  .opt-badge.green { background: #c6f6d5; color: #276749; }
+  .opt-badge.red { background: #fed7d7; color: #9b2c2c; }
+  .opt-badge.yellow { background: #fefcbf; color: #975a16; }
+  .decision-option ul { font-size: .85rem; padding-left: 1.25rem; color: var(--text-light); }
+  .decision-option ul li { margin-bottom: .35rem; }
+  .decision-check {
+    position: absolute; top: -10px; right: -10px;
+    background: var(--success); color: #fff; width: 28px; height: 28px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; display: none;
+  }
+  .decision-option.selected .decision-check { display: flex; }
+
+  /* ── COMMS BLOCK ── */
+  .email-mock {
+    background: #fff; border: 1px solid var(--border); border-radius: 12px;
+    overflow: hidden; margin: 1.5rem 0; max-width: 650px;
+  }
+  .email-header {
+    background: #f7fafc; padding: .75rem 1.25rem;
+    border-bottom: 1px solid var(--border); font-size: .85rem;
+  }
+  .email-header .from { color: var(--text-light); }
+  .email-header .from strong { color: var(--text); }
+  .email-body { padding: 1.25rem; font-size: .9rem; line-height: 1.8; }
+  .email-body .signature { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--text-light); font-size: .85rem; }
+
+  /* ── AI NOTE ── */
+  .ai-note {
+    background: linear-gradient(135deg, #fffaf0, #fefcbf);
+    border: 1px solid #f6e05e; border-radius: 12px;
+    padding: 1.25rem 1.5rem; margin: 2rem 0; font-size: .88rem;
+  }
+  .ai-note strong { color: var(--warning); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--primary); color: rgba(255,255,255,.6);
+    text-align: center; padding: 2rem; font-size: .85rem;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .chart-row { grid-template-columns: 1fr; }
+    .decision-grid { grid-template-columns: 1fr; }
+    .problem-vs { grid-template-columns: 1fr; }
+    .problem-vs .vs-arrow { transform: rotate(90deg); text-align: center; }
+    nav ul { display: none; }
+    .hero h1 { font-size: 1.6rem; }
+    .timeline-row, .timeline-header { grid-template-columns: 70px 1fr 1fr; }
+  }
+
+  /* ── SMOOTH SCROLL ── */
+  html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+
+  /* ── PRINT ── */
+  @media print {
+    nav { position: static; }
+    .story-body { display: block !important; }
+    .hero { padding: 2rem; }
+  }
+
+  /* ── DEPENDENCY TABLE ── */
+  .dep-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .88rem; }
+  .dep-table th { background: var(--primary); color: #fff; padding: .6rem 1rem; text-align: left; font-size: .8rem; text-transform: uppercase; letter-spacing: .5px; }
+  .dep-table td { padding: .6rem 1rem; border-bottom: 1px solid var(--border); }
+  .dep-table tr:hover td { background: #f7fafc; }
+  .dep-tag { display: inline-block; padding: .15rem .5rem; border-radius: 4px; font-size: .72rem; font-weight: 700; }
+  .dep-tag.blocker { background: #fed7d7; color: #9b2c2c; }
+  .dep-tag.required { background: #fefcbf; color: #975a16; }
+
+  /* Reason list */
+  .reason-list { counter-reset: reason; list-style: none; padding: 0; }
+  .reason-list li {
+    counter-increment: reason; padding: .75rem 1rem .75rem 3rem; margin-bottom: .5rem;
+    background: #fff; border-radius: 8px; border: 1px solid var(--border); position: relative;
+    font-size: .9rem;
+  }
+  .reason-list li::before {
+    content: counter(reason); position: absolute; left: .75rem; top: .7rem;
+    background: var(--primary); color: #fff; width: 24px; height: 24px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: .75rem; font-weight: 700;
+  }
+
+  .tag { display: inline-block; padding: .15rem .5rem; border-radius: 4px; font-size: .72rem; font-weight: 700; margin-right: .25rem; }
+  .tag-blue { background: #bee3f8; color: #2a4365; }
+  .tag-purple { background: #e9d8fd; color: #553c9a; }
+  .tag-green { background: #c6f6d5; color: #276749; }
+  .tag-gray { background: #e2e8f0; color: #4a5568; }
+</style>
+</head>
+<body>
+
+<!-- ══════════ NAV ══════════ -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">Challenge PO <span>|</span> Ecomm-App</div>
+    <ul>
+      <li><a href="#discovery">Discovery</a></li>
+      <li><a href="#problemas">Problemas</a></li>
+      <li><a href="#priorizacion">Priorización</a></li>
+      <li><a href="#epicas">Épicas</a></li>
+      <li><a href="#backlog">Backlog</a></li>
+      <li><a href="#sprint">Sprint Plan</a></li>
+      <li><a href="#techlead">Tech Lead</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<div class="hero">
+  <h1>Challenge Técnico — Product Owner</h1>
+  <p class="subtitle">Módulo de Inventario y Stock</p>
+  <div class="meta">
+    <span>&#128100; Lucas Castillo</span>
+    <span>&#128231; lucas.castillo@gmail.com</span>
+    <span>&#128197; Mayo 2026</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ══════════ AI NOTE ══════════ -->
+  <div class="ai-note">
+    <strong>&#9888;&#65039; Nota sobre uso de IA:</strong> Utilicé Claude AI (Anthropic) como asistente para investigar la plataforma de Ecomm-App y su módulo de stock, estructurar y validar la coherencia interna del documento (que los SP cierren a 40, que las dependencias sean consistentes), y como sparring para desafiar mis decisiones de priorización. Todas las decisiones de producto, la lógica de priorización y los criterios de negocio son míos.
+  </div>
+
+</div>
+
+<!-- ══════════ PARTE 1: DISCOVERY ══════════ -->
+<section id="discovery">
+  <div class="container">
+    <div class="section-header">
+      <div class="num">1</div>
+      <h2>Descubrimiento con usuarios</h2>
+    </div>
+
+    <div class="user-tabs">
+      <div class="user-tab active" onclick="showUser('a')">&#128230; Usuario A — Mayorista</div>
+      <div class="user-tab" onclick="showUser('b')">&#127978; Usuario B — Tienda + ML</div>
+      <div class="user-tab" onclick="showUser('c')">&#128666; Usuario C — Dropshipper</div>
+    </div>
+
+    <!-- USUARIO A -->
+    <div class="user-panel active" id="user-a">
+      <div class="card">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+          <div><strong>Situación:</strong> Vende al por mayor. 3 depósitos, +2.000 SKUs. Equipo de depósito usa la app en el celular.</div>
+          <div><strong>Queja:</strong> No puede ver stock en tiempo real por depósito. El reporte es lento y muestra datos de ayer.</div>
+        </div>
+        <div style="background:var(--code-bg);padding:.75rem 1rem;border-radius:8px;font-size:.88rem;">
+          <strong>Lo que pide:</strong> Dashboard de stock por depósito que se actualice solo, con alertas de quiebre.
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="q-label">Pregunta 1</div>
+        <div class="q-text">"Cuando decís que el reporte muestra datos de ayer, ¿cómo te diste cuenta? ¿Qué decisión estabas intentando tomar en ese momento?"</div>
+        <div class="q-justification">No me interesa el síntoma (reporte lento) sino el impacto real. Si estaba decidiendo una reposición y usó datos viejos, el costo es un quiebre de stock. Si era un chequeo de rutina, la urgencia es otra. Revela el <em>job-to-be-done</em> detrás del pedido de dashboard.</div>
+      </div>
+      <div class="question-block">
+        <div class="q-label">Pregunta 2</div>
+        <div class="q-text">"Tu equipo de depósito que usa la app en el celular, ¿cómo comunica hoy las diferencias entre lo que ve en la app y lo que hay físicamente en el estante? ¿Usan algún proceso por fuera de Ecomm-App?"</div>
+        <div class="q-justification">Si hay un proceso paralelo (WhatsApp, planilla), el problema no es de visualización: es de confianza en los datos. Un dashboard en tiempo real no sirve si los datos de base no reflejan la realidad. Me dice si el problema es de interfaz o de integridad.</div>
+      </div>
+      <div class="question-block">
+        <div class="q-label">Pregunta 3</div>
+        <div class="q-text">"De los 3 depósitos, ¿hay alguno que tenga más problemas de precisión que los otros? ¿Hay alguna diferencia en cómo operan?"</div>
+        <div class="q-justification">Si un depósito tiene más discrepancias, probablemente el problema sea operativo (cómo registran movimientos) y no tecnológico. Cambiaría la solución: en vez de un dashboard, podría necesitar un flujo de registro de movimientos más ágil para mobile.</div>
+      </div>
+    </div>
+
+    <!-- USUARIO B -->
+    <div class="user-panel" id="user-b">
+      <div class="card">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+          <div><strong>Situación:</strong> Local en Palermo + Mercado Libre. El stock se descuenta dos veces cuando vende en ML y en el local el mismo día.</div>
+          <div><strong>Queja:</strong> Ventas simultáneas generan stock negativo. Tiene que corregirlo a mano.</div>
+        </div>
+        <div style="background:var(--code-bg);padding:.75rem 1rem;border-radius:8px;font-size:.88rem;">
+          <strong>Lo que pide:</strong> Que el sistema bloquee la venta en ML cuando el stock llega a 0 en el local, sin intervención manual.
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="q-label">Pregunta 1</div>
+        <div class="q-text">"Cuando se genera el stock negativo, ¿podés reconstruir la secuencia? ¿Primero vendés en el local y después entra la venta de ML, o al revés? ¿Cuánto tiempo pasa entre una y otra?"</div>
+        <div class="q-justification">Necesito entender la ventana de la race condition. Si pasan segundos, es un problema de concurrencia pura. Si pasan horas, puede ser un delay en la sincronización con la API de ML. La solución técnica es muy diferente en cada caso.</div>
+      </div>
+      <div class="question-block">
+        <div class="q-label">Pregunta 2</div>
+        <div class="q-text">"¿Cuántas veces por semana te pasa esto, y en cuántos SKUs distintos? ¿Cuánto tiempo te lleva la corrección manual cada vez?"</div>
+        <div class="q-justification">Cuantifico frecuencia e impacto operativo. Si pasa 3 veces por semana en 5 SKUs y tarda 20 minutos cada vez, son ~5 horas/mes de trabajo manual perdido. Me da un argumento de negocio concreto para priorizar.</div>
+      </div>
+      <div class="question-block">
+        <div class="q-label">Pregunta 3</div>
+        <div class="q-text">"Vos pedís que el sistema bloquee la venta en ML cuando el stock llega a 0 en el local. Si eso pasara, ¿cuántas ventas de ML estimás que perderías por día? ¿Hay productos que solo vendés por ML?"</div>
+        <div class="q-justification">Desafía la solución propuesta. Bloquear ML cuando el stock local llega a 0 podría ser peor que el problema: perdería ventas en un canal de alto tráfico. Lo que realmente necesita no es bloqueo sino sincronización precisa. El usuario propone una solución destructiva porque no ve otra alternativa.</div>
+      </div>
+    </div>
+
+    <!-- USUARIO C -->
+    <div class="user-panel" id="user-c">
+      <div class="card">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+          <div><strong>Situación:</strong> No tiene stock físico. Trabaja con proveedores que le mandan el stock manualmente por Excel cada semana.</div>
+          <div><strong>Queja:</strong> Cargar el Excel del proveedor le lleva 2 horas semanales. Se equivoca seguido y no puede validar datos.</div>
+        </div>
+        <div style="background:var(--code-bg);padding:.75rem 1rem;border-radius:8px;font-size:.88rem;">
+          <strong>Lo que pide:</strong> Importación automática del Excel del proveedor con validaciones y preview antes de confirmar.
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="q-label">Pregunta 1</div>
+        <div class="q-text">"¿Cuántos proveedores te mandan Excel, y todos usan el mismo formato? ¿Alguno cambió el formato alguna vez sin avisarte?"</div>
+        <div class="q-justification">Si son 5 proveedores con 5 formatos distintos, la complejidad se multiplica. Si además los formatos cambian sin aviso, necesito un mapeo flexible. Define el alcance técnico de la solución.</div>
+      </div>
+      <div class="question-block">
+        <div class="q-label">Pregunta 2</div>
+        <div class="q-text">"Cuando decís que te equivocás seguido, ¿qué tipo de errores son? ¿SKUs duplicados, cantidades incorrectas, productos que ya no existen? ¿Qué pasa cuando un error llega al sistema?"</div>
+        <div class="q-justification">Cada tipo de error requiere una validación diferente. Un SKU duplicado se detecta fácil; una cantidad incorrecta es imposible de validar sin stock físico de referencia. Si un error genera una venta de un producto inexistente, el impacto downstream es mucho peor.</div>
+      </div>
+      <div class="question-block">
+        <div class="q-label">Pregunta 3</div>
+        <div class="q-text">"Entre una carga semanal y la siguiente, ¿necesitás actualizar stock? Si un proveedor se queda sin algo, ¿cómo te enterás y cómo lo reflejás?"</div>
+        <div class="q-justification">Si solo carga una vez por semana pero vende todos los días, hay 6 días con stock potencialmente desactualizado. El problema podría ser más profundo que la importación: podría necesitar una integración con el proveedor o un flujo de actualización parcial.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PROBLEMAS DE FONDO ══════════ -->
+<section id="problemas">
+  <div class="container">
+    <div class="section-header">
+      <div class="num">2</div>
+      <h2>Problema de fondo de cada usuario</h2>
+    </div>
+
+    <div class="problem-block">
+      <div class="problem-label">Usuario A — Mayorista</div>
+      <h3 style="margin-bottom:.5rem;color:var(--primary);">El problema no es el dashboard, es la confianza en los datos.</h3>
+      <div class="problem-vs">
+        <div class="vs-box">
+          <strong style="color:var(--danger);">Lo que pide</strong><br>
+          Dashboard en tiempo real con alertas de quiebre
+        </div>
+        <div class="vs-arrow">&#8594;</div>
+        <div class="vs-box">
+          <strong style="color:var(--success);">Lo que necesita</strong><br>
+          Certeza de que el stock en Ecomm-App coincide con la realidad física de sus depósitos
+        </div>
+      </div>
+      <p style="margin-top:1rem;font-size:.88rem;color:var(--text-light);">Si el dato de base ya llega con delay o errores, un dashboard más lindo no resuelve nada. Necesita un flujo de stock que garantice integridad de datos, y recién después una visualización confiable.</p>
+    </div>
+
+    <div class="problem-block">
+      <div class="problem-label">Usuario B — Tienda + ML</div>
+      <h3 style="margin-bottom:.5rem;color:var(--primary);">El problema no es bloquear ventas, es la falta de atomicidad en el decremento multi-canal.</h3>
+      <div class="problem-vs">
+        <div class="vs-box">
+          <strong style="color:var(--danger);">Lo que pide</strong><br>
+          Bloquear ML cuando stock = 0 en el local
+        </div>
+        <div class="vs-arrow">&#8594;</div>
+        <div class="vs-box">
+          <strong style="color:var(--success);">Lo que necesita</strong><br>
+          Reserva atómica de stock que impida vender más de lo que hay, sin bloquear ningún canal
+        </div>
+      </div>
+      <p style="margin-top:1rem;font-size:.88rem;color:var(--text-light);">Dos canales venden el mismo producto al mismo tiempo y ambos decrementan sin verificar si el otro ya lo hizo. Es un problema de integridad transaccional. Bloquear ML le haría perder ventas.</p>
+    </div>
+
+    <div class="problem-block">
+      <div class="problem-label">Usuario C — Dropshipper</div>
+      <h3 style="margin-bottom:.5rem;color:var(--primary);">El problema no es solo la importación, es la dependencia de un flujo manual para un dato crítico.</h3>
+      <div class="problem-vs">
+        <div class="vs-box">
+          <strong style="color:var(--danger);">Lo que pide</strong><br>
+          Importación con validación y preview
+        </div>
+        <div class="vs-arrow">&#8594;</div>
+        <div class="vs-box">
+          <strong style="color:var(--success);">Lo que necesita</strong><br>
+          Reducir dependencia de archivos manuales de terceros para un dato crítico del negocio
+        </div>
+      </div>
+      <p style="margin-top:1rem;font-size:.88rem;color:var(--text-light);">Su modelo operativo depende de un archivo en un formato que no controla, una vez por semana. A corto plazo la importación validada resuelve las 2 horas de dolor. A mediano plazo necesitaría integración directa con el proveedor.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PRIORIZACIÓN ══════════ -->
+<section id="priorizacion">
+  <div class="container">
+    <div class="section-header">
+      <div class="num">3</div>
+      <h2>Priorización del sprint</h2>
+    </div>
+
+    <!-- MATRIX VISUAL -->
+    <div class="chart-row">
+      <div class="chart-box">
+        <h4>Matriz de impacto vs. tipo de problema</h4>
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;">
+          <!-- Axes -->
+          <line x1="80" y1="260" x2="380" y2="260" stroke="#cbd5e0" stroke-width="2"/>
+          <line x1="80" y1="260" x2="80" y2="30" stroke="#cbd5e0" stroke-width="2"/>
+          <!-- Labels -->
+          <text x="230" y="290" text-anchor="middle" fill="#718096" font-size="11" font-weight="600">IMPACTO EN USUARIOS</text>
+          <text x="25" y="145" text-anchor="middle" fill="#718096" font-size="11" font-weight="600" transform="rotate(-90 25 145)">SEVERIDAD</text>
+          <!-- Grid -->
+          <line x1="80" y1="145" x2="380" y2="145" stroke="#edf2f7" stroke-width="1" stroke-dasharray="4"/>
+          <line x1="230" y1="30" x2="230" y2="260" stroke="#edf2f7" stroke-width="1" stroke-dasharray="4"/>
+          <!-- Axis labels -->
+          <text x="85" y="258" fill="#a0aec0" font-size="9">Bajo</text>
+          <text x="370" y="258" fill="#a0aec0" font-size="9" text-anchor="end">Alto</text>
+          <text x="85" y="42" fill="#a0aec0" font-size="9">Bug / Integridad</text>
+          <text x="85" y="255" fill="#a0aec0" font-size="9"></text>
+          <text x="85" y="148" fill="#a0aec0" font-size="9">Feature</text>
+          <!-- Quadrant labels -->
+          <rect x="240" y="35" width="135" height="100" rx="8" fill="#f0fff4" opacity=".5"/>
+          <text x="307" y="55" text-anchor="middle" fill="#38a169" font-size="9" font-weight="700">RESOLVER PRIMERO</text>
+          <!-- User A - Mayorista -->
+          <circle cx="200" cy="170" r="28" fill="#3182ce" opacity=".15"/>
+          <circle cx="200" cy="170" r="20" fill="#3182ce" opacity=".3"/>
+          <text x="200" y="174" text-anchor="middle" fill="#2b6cb0" font-size="11" font-weight="700">A</text>
+          <text x="200" y="205" text-anchor="middle" fill="#718096" font-size="9">Mayorista</text>
+          <!-- User B - Tienda + ML -->
+          <circle cx="310" cy="75" r="32" fill="#38a169" opacity=".15"/>
+          <circle cx="310" cy="75" r="24" fill="#38a169" opacity=".3"/>
+          <text x="310" y="79" text-anchor="middle" fill="#276749" font-size="13" font-weight="700">B</text>
+          <text x="310" y="112" text-anchor="middle" fill="#276749" font-size="9" font-weight="600">Tienda + ML</text>
+          <!-- User C - Dropshipper -->
+          <circle cx="160" cy="190" r="24" fill="#805ad5" opacity=".15"/>
+          <circle cx="160" cy="190" r="16" fill="#805ad5" opacity=".3"/>
+          <text x="160" y="194" text-anchor="middle" fill="#553c9a" font-size="11" font-weight="700">C</text>
+          <text x="160" y="220" text-anchor="middle" fill="#718096" font-size="9">Dropshipper</text>
+        </svg>
+      </div>
+      <div class="chart-box">
+        <h4>¿Por qué el Usuario B primero?</h4>
+        <ul class="reason-list">
+          <li><strong>Es un bug, no un feature.</strong> El stock negativo por ventas simultáneas es un defecto de integridad de datos. Erosiona la confianza en la plataforma.</li>
+          <li><strong>Impacto transversal.</strong> Cualquier usuario que venda en más de un canal está expuesto. No es un edge case.</li>
+          <li><strong>Costo progresivo.</strong> Cada día, más vendedores experimentan stock negativo y corrigen a mano. Algunos podrían dejar de confiar en la sincronización.</li>
+          <li><strong>La solución del usuario es destructiva.</strong> Si le damos lo que pide (bloquear ML), pierde ventas. Tenemos que intervenir con una solución que no puede imaginar solo.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="priority-card">
+      <div class="badge">&#9989; Decisión de sprint</div>
+      <p><strong>Prioridad 1:</strong> Usuario B — Resolver el stock negativo multi-canal (épica principal del sprint).</p>
+      <p><strong>Prioridad 2:</strong> Usuario C — Importación validada de inventario (épica secundaria, scope más acotado y complementario).</p>
+      <p style="margin-top:.5rem;color:var(--text-light);font-size:.88rem;"><strong>Backlog:</strong> Usuario A — Dashboard de stock por depósito. Requiere primero resolver la confiabilidad de los datos de base, que parcialmente se aborda con la épica del Usuario B.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PARTE 2: ÉPICAS ══════════ -->
+<section id="epicas">
+  <div class="container">
+    <div class="section-header">
+      <div class="num">4</div>
+      <h2>Épicas del sprint</h2>
+    </div>
+
+    <div class="epic-header epic-1">
+      <div>
+        <div class="epic-num">Épica 1 — 24 SP</div>
+        <h3>Integridad de stock en ventas multi-canal</h3>
+      </div>
+    </div>
+    <div class="card">
+      <p>Implementar un mecanismo de reserva y validación de stock que prevenga la generación de stock negativo cuando se producen ventas simultáneas en múltiples canales (local físico, Mercado Libre, Tiendanube).</p>
+      <h4>Objetivo de negocio</h4>
+      <p>Eliminar la pérdida de confianza de los vendedores multi-canal en el dato de stock, reduciendo la intervención manual y el riesgo de sobreventa.</p>
+      <h4>Criterios de éxito medibles</h4>
+      <ul style="padding-left:1.25rem;font-size:.9rem;">
+        <li>Incidencias de stock negativo por ventas simultáneas: de X actual a <strong>0</strong> en los 30 días post-deploy.</li>
+        <li>Tickets de soporte por corrección manual de stock: <strong>reducción del 80%</strong> en 30 días.</li>
+        <li>Tiempo de corrección manual por usuario: de ~20 min/incidencia a <strong>0</strong>.</li>
+      </ul>
+    </div>
+
+    <div class="epic-header epic-2">
+      <div>
+        <div class="epic-num">Épica 2 — 16 SP</div>
+        <h3>Importación validada de inventario desde proveedores</h3>
+      </div>
+    </div>
+    <div class="card">
+      <p>Crear un flujo de importación de stock desde archivos Excel de proveedores que incluya validación automática, preview de cambios antes de confirmar y registro de cada importación.</p>
+      <h4>Objetivo de negocio</h4>
+      <p>Reducir la fricción operativa de vendedores que dependen de proveedores externos para su stock, convirtiendo un proceso manual de 2 horas con alta tasa de error en uno asistido de menos de 15 minutos.</p>
+      <h4>Criterios de éxito medibles</h4>
+      <ul style="padding-left:1.25rem;font-size:.9rem;">
+        <li>Tiempo promedio de importación semanal: de 2 horas a <strong>menos de 15 min</strong>.</li>
+        <li>Tasa de error en importaciones: inferior al <strong>5%</strong>.</li>
+        <li>Adopción del nuevo flujo: <strong>70%</strong> de usuarios que importan Excel en el primer mes.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ BACKLOG ══════════ -->
+<section id="backlog">
+  <div class="container">
+    <div class="section-header">
+      <div class="num">5</div>
+      <h2>User stories y backlog del sprint</h2>
+    </div>
+
+    <!-- SP CHART -->
+    <div class="chart-box" style="margin-bottom:2rem;">
+      <h4>Distribución de Story Points — Sprint (40 SP total)</h4>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label">US-1.1</div>
+          <div class="bar-track"><div class="bar-fill epic1" style="width:20%;">8 SP</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">US-1.2</div>
+          <div class="bar-track"><div class="bar-fill epic1" style="width:20%;">8 SP</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">US-1.3</div>
+          <div class="bar-track"><div class="bar-fill epic1" style="width:12.5%;">5 SP</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">US-1.4</div>
+          <div class="bar-track"><div class="bar-fill spike" style="width:7.5%;">3 SP</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">US-2.1</div>
+          <div class="bar-track"><div class="bar-fill epic2" style="width:25%;">10 SP</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">US-2.2</div>
+          <div class="bar-track"><div class="bar-fill epic2" style="width:12.5%;">5 SP</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">TT-2.1</div>
+          <div class="bar-track"><div class="bar-fill spike" style="width:2.5%;">1 SP</div></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:1.5rem;justify-content:center;margin-top:1rem;font-size:.8rem;">
+        <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:linear-gradient(90deg, #3182ce, #63b3ed);vertical-align:middle;margin-right:.3rem;"></span> Épica 1 (24 SP)</span>
+        <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:linear-gradient(90deg, #805ad5, #b794f4);vertical-align:middle;margin-right:.3rem;"></span> Épica 2 (16 SP)</span>
+        <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:linear-gradient(90deg, #718096, #a0aec0);vertical-align:middle;margin-right:.3rem;"></span> Spike / Tech (4 SP)</span>
+      </div>
+    </div>
+
+    <!-- ── STORIES ÉPICA 1 ── -->
+    <div class="epic-header epic-1" style="margin-top:1rem;">
+      <div><div class="epic-num">Épica 1</div><h3>Integridad de stock en ventas multi-canal</h3></div>
+    </div>
+
+    <!-- US-1.1 -->
+    <div class="story-card">
+      <div class="story-header" onclick="toggleStory(this)">
+        <div>
+          <span class="story-id">US-1.1</span>
+          <span style="color:var(--text-light);font-size:.88rem;margin-left:.5rem;">Validación de disponibilidad antes de confirmar decremento</span>
+        </div>
+        <span class="story-sp">8 SP</span>
+      </div>
+      <div class="story-body">
+        <div class="story-format">
+          <strong>Como</strong> vendedor multi-canal<br>
+          <strong>Quiero</strong> que el sistema verifique que hay stock disponible antes de descontar por una venta<br>
+          <strong>Para</strong> que nunca se genere stock negativo por ventas simultáneas en distintos canales.
+        </div>
+        <p style="font-size:.85rem;color:var(--text-light);margin:.75rem 0;">
+          <strong>Justificación SP:</strong> Core backend. Requiere modificar la lógica de decremento para una verificación atómica (check-and-decrement en una sola transacción). Involucra 2 BE. Complejidad alta por riesgo de regresión y testing exhaustivo. <span class="tag tag-blue">2 BE</span> <span class="tag tag-green">QA</span>
+        </p>
+        <div class="gherkin">
+<span class="sc">Scenario:</span> Venta exitosa con stock disponible<br>
+&nbsp;&nbsp;<span class="kw">Given</span> un producto con SKU <span class="str">"ABC-001"</span> y stock disponible = 5 en el depósito <span class="str">"Principal"</span><br>
+&nbsp;&nbsp;<span class="kw">And</span> el producto está vinculado a Mercado Libre y Local físico<br>
+&nbsp;&nbsp;<span class="kw">When</span> se confirma una venta de 1 unidad desde Mercado Libre<br>
+&nbsp;&nbsp;<span class="kw">Then</span> el stock se decrementa a 4<br>
+&nbsp;&nbsp;<span class="kw">And</span> se registra el movimiento con origen <span class="str">"Mercado Libre"</span> y timestamp<br><br>
+<span class="sc">Scenario:</span> Venta simultánea sin stock suficiente<br>
+&nbsp;&nbsp;<span class="kw">Given</span> un producto con SKU <span class="str">"ABC-001"</span> y stock disponible = 1<br>
+&nbsp;&nbsp;<span class="kw">When</span> se confirma una venta de 1 unidad desde Mercado Libre<br>
+&nbsp;&nbsp;<span class="kw">And</span> simultáneamente se confirma una venta de 1 unidad desde Local físico<br>
+&nbsp;&nbsp;<span class="kw">Then</span> solo una de las dos ventas decrementa el stock a 0<br>
+&nbsp;&nbsp;<span class="kw">And</span> la segunda venta recibe un error de stock insuficiente<br>
+&nbsp;&nbsp;<span class="kw">And</span> el stock nunca queda en valor negativo<br><br>
+<span class="sc">Scenario:</span> Venta de combo con stock limitado en un componente<br>
+&nbsp;&nbsp;<span class="kw">Given</span> un combo <span class="str">"Pack-XY"</span> compuesto por producto <span class="str">"X"</span> (stock=3) y producto <span class="str">"Y"</span> (stock=1)<br>
+&nbsp;&nbsp;<span class="kw">When</span> se confirma una venta de 1 unidad del combo<br>
+&nbsp;&nbsp;<span class="kw">Then</span> se decrementa 1 de <span class="str">"X"</span> (stock=2) y 1 de <span class="str">"Y"</span> (stock=0)<br>
+&nbsp;&nbsp;<span class="kw">And</span> el stock disponible del combo se recalcula a 0
+        </div>
+      </div>
+    </div>
+
+    <!-- US-1.2 -->
+    <div class="story-card">
+      <div class="story-header" onclick="toggleStory(this)">
+        <div>
+          <span class="story-id">US-1.2</span>
+          <span style="color:var(--text-light);font-size:.88rem;margin-left:.5rem;">Reconciliación de discrepancias de stock post-venta</span>
+        </div>
+        <span class="story-sp">8 SP</span>
+      </div>
+      <div class="story-body">
+        <div class="story-format">
+          <strong>Como</strong> vendedor multi-canal<br>
+          <strong>Quiero</strong> ver un listado de productos con discrepancias de stock entre canales y corregirlos de forma asistida<br>
+          <strong>Para</strong> no tener que buscar uno por uno los productos con stock inconsistente.
+        </div>
+        <p style="font-size:.85rem;color:var(--text-light);margin:.75rem 0;">
+          <strong>Justificación SP:</strong> Nuevo endpoint BE que cruza stock de Ecomm-App con el reportado por cada canal + vista nueva en FE con tabla, filtros y acción de corrección. Integración con APIs externas (ML, Tiendanube). <span class="tag tag-blue">1 BE</span> <span class="tag tag-purple">1 FE</span> <span class="tag tag-green">QA</span>
+        </p>
+        <div class="gherkin">
+<span class="sc">Scenario:</span> Visualización de productos con discrepancia<br>
+&nbsp;&nbsp;<span class="kw">Given</span> que existen productos cuyo stock en Ecomm-App difiere del publicado en ML<br>
+&nbsp;&nbsp;<span class="kw">When</span> el vendedor accede a Gestión > Inventario > Discrepancias<br>
+&nbsp;&nbsp;<span class="kw">Then</span> ve una tabla con: SKU, nombre, stock Ecomm-App, stock en cada canal, diferencia<br>
+&nbsp;&nbsp;<span class="kw">And</span> la tabla se puede ordenar por diferencia y filtrar por canal y depósito<br><br>
+<span class="sc">Scenario:</span> Corrección de discrepancia individual<br>
+&nbsp;&nbsp;<span class="kw">Given</span> un producto con stock 5 en Ecomm-App y 3 en Mercado Libre<br>
+&nbsp;&nbsp;<span class="kw">When</span> el vendedor hace clic en <span class="str">"Sincronizar"</span> y elige <span class="str">"Usar stock de Ecomm-App"</span><br>
+&nbsp;&nbsp;<span class="kw">Then</span> el stock en ML se actualiza a 5<br>
+&nbsp;&nbsp;<span class="kw">And</span> se registra un movimiento de tipo <span class="str">"Sincronización"</span><br><br>
+<span class="sc">Scenario:</span> Corrección masiva<br>
+&nbsp;&nbsp;<span class="kw">Given</span> múltiples productos con discrepancias<br>
+&nbsp;&nbsp;<span class="kw">When</span> el vendedor selecciona varios y elige <span class="str">"Sincronizar seleccionados"</span><br>
+&nbsp;&nbsp;<span class="kw">Then</span> se actualizan todos los seleccionados<br>
+&nbsp;&nbsp;<span class="kw">And</span> se muestra resumen con actualizados y errores
+        </div>
+      </div>
+    </div>
+
+    <!-- US-1.3 -->
+    <div class="story-card">
+      <div class="story-header" onclick="toggleStory(this)">
+        <div>
+          <span class="story-id">US-1.3</span>
+          <span style="color:var(--text-light);font-size:.88rem;margin-left:.5rem;">Alerta de stock mínimo por canal y depósito</span>
+        </div>
+        <span class="story-sp">5 SP</span>
+      </div>
+      <div class="story-body">
+        <div class="story-format">
+          <strong>Como</strong> vendedor multi-canal<br>
+          <strong>Quiero</strong> recibir una alerta cuando el stock baje de un umbral que yo defina<br>
+          <strong>Para</strong> tomar acción antes de un quiebre de stock o una sobreventa.
+        </div>
+        <p style="font-size:.85rem;color:var(--text-light);margin:.75rem 0;">
+          <strong>Justificación SP:</strong> Complejidad media. BE: campo de umbral + job de evaluación. FE: campo editable en ficha de producto + sección alertas. Funcionalidad aditiva, no modifica lógica existente. <span class="tag tag-blue">1 BE</span> <span class="tag tag-purple">1 FE</span>
+        </p>
+        <div class="gherkin">
+<span class="sc">Scenario:</span> Configuración de umbral<br>
+&nbsp;&nbsp;<span class="kw">Given</span> un producto <span class="str">"ABC-001"</span> en el depósito <span class="str">"Principal"</span><br>
+&nbsp;&nbsp;<span class="kw">When</span> el vendedor configura stock mínimo = 5<br>
+&nbsp;&nbsp;<span class="kw">Then</span> el umbral queda visible en la ficha del producto<br><br>
+<span class="sc">Scenario:</span> Disparo de alerta<br>
+&nbsp;&nbsp;<span class="kw">Given</span> stock mínimo = 5 y stock actual = 6<br>
+&nbsp;&nbsp;<span class="kw">When</span> una venta decrementa el stock a 5<br>
+&nbsp;&nbsp;<span class="kw">Then</span> se genera una alerta con producto, SKU, stock actual, umbral y depósito<br><br>
+<span class="sc">Scenario:</span> Sin alerta si no hay umbral<br>
+&nbsp;&nbsp;<span class="kw">Given</span> un producto sin stock mínimo configurado<br>
+&nbsp;&nbsp;<span class="kw">When</span> el stock baja a cualquier nivel<br>
+&nbsp;&nbsp;<span class="kw">Then</span> no se genera alerta
+        </div>
+      </div>
+    </div>
+
+    <!-- US-1.4 Spike -->
+    <div class="story-card">
+      <div class="story-header" onclick="toggleStory(this)">
+        <div>
+          <span class="story-id">US-1.4</span>
+          <span style="color:var(--text-light);font-size:.88rem;margin-left:.5rem;">Spike — Auditoría del trigger de decremento actual</span>
+        </div>
+        <span class="story-sp" style="background:#718096;">3 SP</span>
+      </div>
+      <div class="story-body">
+        <div class="story-format">
+          <strong>Como</strong> equipo de desarrollo<br>
+          <strong>Quiero</strong> documentar el comportamiento actual del trigger de decremento de stock<br>
+          <strong>Para</strong> implementar la US-1.1 sin riesgo de romper el historial existente.
+        </div>
+        <p style="font-size:.85rem;color:var(--text-light);margin:.75rem 0;">
+          <strong>Justificación SP:</strong> Spike de investigación. Output: documento técnico, no código productivo. 1 BE, ~1 día. Bajo en puntos pero alto en valor de reducción de riesgo. <span class="tag tag-blue">1 BE</span>
+        </p>
+        <div class="gherkin">
+<span class="sc">Scenario:</span> Documentación completada<br>
+&nbsp;&nbsp;<span class="kw">Given</span> que el equipo necesita modificar el trigger de decremento<br>
+&nbsp;&nbsp;<span class="kw">When</span> el BE completa la auditoría<br>
+&nbsp;&nbsp;<span class="kw">Then</span> existe un documento que describe:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;- Cómo funciona hoy el trigger<br>
+&nbsp;&nbsp;&nbsp;&nbsp;- Qué tablas y registros se ven afectados<br>
+&nbsp;&nbsp;&nbsp;&nbsp;- Impacto en historial de movimientos si se modifica<br>
+&nbsp;&nbsp;&nbsp;&nbsp;- Propuesta de approach que preserve el historial<br>
+&nbsp;&nbsp;<span class="kw">And</span> el documento fue revisado por el tech lead
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STORIES ÉPICA 2 ── -->
+    <div class="epic-header epic-2" style="margin-top:2rem;">
+      <div><div class="epic-num">Épica 2</div><h3>Importación validada de inventario desde proveedores</h3></div>
+    </div>
+
+    <!-- US-2.1 -->
+    <div class="story-card">
+      <div class="story-header" onclick="toggleStory(this)">
+        <div>
+          <span class="story-id">US-2.1</span>
+          <span style="color:var(--text-light);font-size:.88rem;margin-left:.5rem;">Importación de Excel con validación y vista previa</span>
+        </div>
+        <span class="story-sp" style="background:#805ad5;">10 SP</span>
+      </div>
+      <div class="story-body">
+        <div class="story-format">
+          <strong>Como</strong> vendedor que recibe stock de proveedores por Excel<br>
+          <strong>Quiero</strong> subir el archivo, ver un preview de los cambios y corregir errores antes de confirmar<br>
+          <strong>Para</strong> no cargar datos incorrectos y reducir el tiempo del proceso.
+        </div>
+        <p style="font-size:.85rem;color:var(--text-light);margin:.75rem 0;">
+          <strong>Justificación SP:</strong> Story más completa de esta épica. BE: parseo de Excel, reglas de validación, generación de preview. FE: flujo completo (upload → preview con errores → confirmación). Complejidad en manejo de edge cases. <span class="tag tag-blue">1 BE</span> <span class="tag tag-purple">1 FE</span> <span class="tag tag-green">QA</span>
+        </p>
+        <div class="gherkin">
+<span class="sc">Scenario:</span> Upload exitoso con datos válidos<br>
+&nbsp;&nbsp;<span class="kw">Given</span> un archivo Excel con columnas SKU, nombre, cantidad y costo<br>
+&nbsp;&nbsp;<span class="kw">When</span> el vendedor sube el archivo en Gestión > Inventario > Importar stock<br>
+&nbsp;&nbsp;<span class="kw">Then</span> muestra preview con: productos a actualizar, a crear, y detalle fila por fila<br>
+&nbsp;&nbsp;<span class="kw">And</span> el vendedor puede confirmar o cancelar<br><br>
+<span class="sc">Scenario:</span> Upload con errores de validación<br>
+&nbsp;&nbsp;<span class="kw">Given</span> un Excel con SKU duplicado y cantidad negativa<br>
+&nbsp;&nbsp;<span class="kw">When</span> el vendedor sube el archivo<br>
+&nbsp;&nbsp;<span class="kw">Then</span> las filas con error aparecen resaltadas con mensaje descriptivo<br>
+&nbsp;&nbsp;<span class="kw">And</span> puede corregir en el preview o descartar las filas<br>
+&nbsp;&nbsp;<span class="kw">And</span> solo puede confirmar cuando no quedan errores bloqueantes<br><br>
+<span class="sc">Scenario:</span> Confirmación<br>
+&nbsp;&nbsp;<span class="kw">Given</span> un preview sin errores<br>
+&nbsp;&nbsp;<span class="kw">When</span> el vendedor confirma<br>
+&nbsp;&nbsp;<span class="kw">Then</span> el stock se actualiza y se registra la importación<br>
+&nbsp;&nbsp;<span class="kw">And</span> se muestra resumen: <span class="str">"X actualizados, Y creados, Z descartados"</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- US-2.2 -->
+    <div class="story-card">
+      <div class="story-header" onclick="toggleStory(this)">
+        <div>
+          <span class="story-id">US-2.2</span>
+          <span style="color:var(--text-light);font-size:.88rem;margin-left:.5rem;">Historial de importaciones con detalle de cambios</span>
+        </div>
+        <span class="story-sp" style="background:#805ad5;">5 SP</span>
+      </div>
+      <div class="story-body">
+        <div class="story-format">
+          <strong>Como</strong> vendedor que importa stock semanalmente<br>
+          <strong>Quiero</strong> ver un historial de importaciones con detalle de qué cambió en cada una<br>
+          <strong>Para</strong> rastrear errores y comparar con importaciones anteriores.
+        </div>
+        <p style="font-size:.85rem;color:var(--text-light);margin:.75rem 0;">
+          <strong>Justificación SP:</strong> Complejidad media-baja. BE: modelo de logs (data ya se genera en US-2.1). FE: tabla con expand de detalle. <span class="tag tag-blue">1 BE</span> <span class="tag tag-purple">1 FE</span>
+        </p>
+        <div class="gherkin">
+<span class="sc">Scenario:</span> Visualización del historial<br>
+&nbsp;&nbsp;<span class="kw">Given</span> importaciones previas<br>
+&nbsp;&nbsp;<span class="kw">When</span> accede a Historial de importaciones<br>
+&nbsp;&nbsp;<span class="kw">Then</span> ve lista con fecha, archivo, productos actualizados/creados/error, usuario<br><br>
+<span class="sc">Scenario:</span> Detalle de una importación<br>
+&nbsp;&nbsp;<span class="kw">Given</span> una importación en el historial<br>
+&nbsp;&nbsp;<span class="kw">When</span> hace clic en <span class="str">"Ver detalle"</span><br>
+&nbsp;&nbsp;<span class="kw">Then</span> ve fila por fila: SKU, stock anterior, stock nuevo, resultado<br>
+&nbsp;&nbsp;<span class="kw">And</span> puede descargar el archivo original
+        </div>
+      </div>
+    </div>
+
+    <!-- TT-2.1 -->
+    <div class="story-card">
+      <div class="story-header" onclick="toggleStory(this)">
+        <div>
+          <span class="story-id">TT-2.1</span>
+          <span style="color:var(--text-light);font-size:.88rem;margin-left:.5rem;">Tech Task — Definir esquema de mapeo de columnas</span>
+        </div>
+        <span class="story-sp" style="background:#718096;">1 SP</span>
+      </div>
+      <div class="story-body">
+        <p>Definir y documentar las reglas de mapeo entre columnas de los formatos Excel más comunes de proveedores y los campos internos de Ecomm-App (SKU, cantidad, costo, nombre). Este mapeo será input de la US-2.1.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════ SPRINT PLAN ══════════ -->
+<section id="sprint">
+  <div class="container">
+    <div class="section-header">
+      <div class="num">6</div>
+      <h2>Sprint plan y dependencias</h2>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="chart-box" style="margin-bottom:2rem;">
+      <h4>Timeline de ejecución — Sprint de 2 semanas</h4>
+      <div class="timeline">
+        <div class="timeline-header">
+          <span></span>
+          <span>Semana 1</span>
+          <span>Semana 2</span>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-label">US-1.4 Spike</div>
+          <div class="timeline-week"><div class="timeline-bar" style="left:0;width:30%;background:#718096;">1 BE</div></div>
+          <div class="timeline-week"></div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-label">TT-2.1</div>
+          <div class="timeline-week"><div class="timeline-bar" style="left:0;width:20%;background:#a0aec0;">1 BE</div></div>
+          <div class="timeline-week"></div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-label">US-1.1</div>
+          <div class="timeline-week"><div class="timeline-bar" style="left:35%;width:65%;background:#3182ce;">2 BE</div></div>
+          <div class="timeline-week"><div class="timeline-bar" style="left:0;width:30%;background:#3182ce;"></div></div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-label">US-2.1</div>
+          <div class="timeline-week"><div class="timeline-bar" style="left:25%;width:75%;background:#805ad5;">1 FE + 1 BE</div></div>
+          <div class="timeline-week"><div class="timeline-bar" style="left:0;width:40%;background:#805ad5;"></div></div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-label">US-1.2</div>
+          <div class="timeline-week"></div>
+          <div class="timeline-week"><div class="timeline-bar" style="left:15%;width:60%;background:#63b3ed;">1 BE + 1 FE</div></div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-label">US-1.3</div>
+          <div class="timeline-week"></div>
+          <div class="timeline-week"><div class="timeline-bar" style="left:40%;width:45%;background:#90cdf4;">1 FE + 1 BE</div></div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-label">US-2.2</div>
+          <div class="timeline-week"></div>
+          <div class="timeline-week"><div class="timeline-bar" style="left:45%;width:40%;background:#b794f4;">1 BE + 1 FE</div></div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-label" style="color:var(--success);font-weight:700;">QA</div>
+          <div class="timeline-week"><div class="timeline-bar" style="left:60%;width:40%;background:#38a169;">Setup + US-1.4</div></div>
+          <div class="timeline-week"><div class="timeline-bar" style="left:0;width:100%;background:#38a169;">Testing continuo</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEPENDENCIES TABLE -->
+    <h3 style="margin-bottom:1rem;">Dependencias técnicas y de datos</h3>
+    <table class="dep-table">
+      <thead>
+        <tr>
+          <th>Dependencia</th>
+          <th>Tipo</th>
+          <th>Impacta a</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Auditoría del trigger</strong></td>
+          <td><span class="dep-tag blocker">Bloqueante</span></td>
+          <td>US-1.1</td>
+          <td>El spike US-1.4 debe completarse antes de tocar el trigger de decremento. El tech lead advirtió que puede romper el historial.</td>
+        </tr>
+        <tr>
+          <td><strong>APIs de stock externas</strong></td>
+          <td><span class="dep-tag required">Requerido</span></td>
+          <td>US-1.2</td>
+          <td>Verificar permisos y endpoints de ML y Tiendanube para leer stock. Conocer rate limits para consultas masivas.</td>
+        </tr>
+        <tr>
+          <td><strong>Esquema de mapeo Excel</strong></td>
+          <td><span class="dep-tag blocker">Bloqueante</span></td>
+          <td>US-2.1</td>
+          <td>TT-2.1 debe completarse antes de construir el parser. Idealmente obtener 3-4 Excels reales de usuarios dropshippers.</td>
+        </tr>
+        <tr>
+          <td><strong>Entorno de testing multi-canal</strong></td>
+          <td><span class="dep-tag required">Requerido</span></td>
+          <td>US-1.1, US-1.2</td>
+          <td>QA necesita un entorno que simule ventas simultáneas en múltiples canales. Sin esto no podemos validar el fix.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════ PARTE 3: TECH LEAD ══════════ -->
+<section id="techlead">
+  <div class="container">
+    <div class="section-header">
+      <div class="num">7</div>
+      <h2>Comunicación con el equipo técnico</h2>
+    </div>
+
+    <!-- Message from tech lead -->
+    <div class="card" style="background:#f7fafc;border-left:4px solid var(--accent);">
+      <p style="font-size:.82rem;color:var(--text-light);margin-bottom:.5rem;">&#128172; Mensaje del Tech Lead — Jueves 11:00am</p>
+      <p style="font-style:italic;font-size:.92rem;line-height:1.8;">
+        "Lucas, el fix del stock negativo en combos que pediste para este sprint no se puede hacer como lo especificaste. Si tocamos el trigger de decremento como dijiste, rompemos el historial de movimientos de todos los usuarios. Necesito que decidamos hoy porque mañana se va el deploy. Opciones: <strong>(a)</strong> lo hacemos solo para combos nuevos y dejamos los existentes como están, <strong>(b)</strong> migramos todo pero tardamos 2 semanas más, <strong>(c)</strong> lo dejamos para el próximo sprint y ponemos un workaround en el front."
+      </p>
+    </div>
+
+    <!-- Questions to tech lead -->
+    <h3 style="margin:1.5rem 0 1rem;">Preguntas antes de decidir</h3>
+    <div class="question-block">
+      <div class="q-label">Pregunta 1</div>
+      <div class="q-text">"Cuando decís que rompemos el historial de movimientos, ¿qué significa concretamente? ¿Se pierden registros, se descalzan cantidades, o se rompe la trazabilidad?"</div>
+      <div class="q-justification">Necesito entender la magnitud exacta del riesgo. No es lo mismo perder datos que descalzar un cálculo reconstruible.</div>
+    </div>
+    <div class="question-block">
+      <div class="q-label">Pregunta 2</div>
+      <div class="q-text">"¿Cuántos usuarios tienen combos activos hoy? ¿Qué porcentaje del total de transacciones de stock pasan por combos?"</div>
+      <div class="q-justification">Si los combos son el 5% de las transacciones, la opción (a) cubre casi a todos. Si son el 40%, deja afuera a demasiada gente.</div>
+    </div>
+    <div class="question-block">
+      <div class="q-label">Pregunta 3</div>
+      <div class="q-text">"En la opción (a), ¿es posible planificar una migración gradual de los existentes en el siguiente sprint? ¿O genera una bifurcación costosa?"</div>
+      <div class="q-justification">Me interesa saber si (a) es un paso incremental o si genera deuda técnica que después es más cara de unificar.</div>
+    </div>
+    <div class="question-block">
+      <div class="q-label">Pregunta 4</div>
+      <div class="q-text">"En la opción (c), ¿qué haría exactamente el workaround de front? ¿Previene el stock negativo o solo lo oculta visualmente?"</div>
+      <div class="q-justification">Si solo esconde el número negativo, es inaceptable: el dato corrupto sigue ahí. Si efectivamente previene, podría ser un bridge aceptable.</div>
+    </div>
+    <div class="question-block">
+      <div class="q-label">Pregunta 5</div>
+      <div class="q-text">"Las 2 semanas de la opción (b), ¿son estimación de alta confianza o hay incertidumbre? ¿Qué riesgo hay de que se extienda?"</div>
+      <div class="q-justification">Las estimaciones bajo presión suelen ser optimistas. Si 2 semanas se convierten en 4, compromete el siguiente sprint.</div>
+    </div>
+
+    <!-- Decision -->
+    <h3 style="margin:2rem 0 1rem;">Decisión</h3>
+    <div class="decision-grid">
+      <div class="decision-option selected">
+        <div class="decision-check">&#10003;</div>
+        <div class="opt-label">Opción A <span class="opt-badge green">Elegida</span></div>
+        <p style="font-size:.88rem;margin-bottom:.75rem;">Solo para combos nuevos, los existentes quedan como están.</p>
+        <ul>
+          <li>Entrega valor real en fecha</li>
+          <li>Cero riesgo al historial</li>
+          <li>Valida la lógica en producción con bajo blast radius</li>
+          <li>Migración de existentes como follow-up planificado</li>
+        </ul>
+      </div>
+      <div class="decision-option">
+        <div class="opt-label">Opción B <span class="opt-badge red">Descartada</span></div>
+        <p style="font-size:.88rem;margin-bottom:.75rem;">Migramos todo, 2 semanas más de delay.</p>
+        <ul>
+          <li>Solución técnicamente "completa"</li>
+          <li>Retrasa el deploy y genera presión</li>
+          <li>Estimación de 2 semanas con incertidumbre</li>
+          <li>Modificar historial de todos = alto riesgo para decidir un jueves a las 11am</li>
+        </ul>
+      </div>
+      <div class="decision-option">
+        <div class="opt-label">Opción C <span class="opt-badge yellow">Descartada</span></div>
+        <p style="font-size:.88rem;margin-bottom:.75rem;">Workaround en front, fix para el próximo sprint.</p>
+        <ul>
+          <li>Si solo oculta el negativo, los datos siguen corruptos</li>
+          <li>Soporte sigue recibiendo tickets</li>
+          <li>Crea deuda técnica sin resolver el fondo</li>
+          <li>Solo aceptable si efectivamente previene el negativo</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Communication to user -->
+    <h3 style="margin:2rem 0 1rem;">Comunicación al usuario afectado</h3>
+    <div class="email-mock">
+      <div class="email-header">
+        <div class="from"><strong>De:</strong> Lucas Castillo — Product Owner, Módulo de Inventario</div>
+        <div class="from"><strong>Para:</strong> [nombre del usuario con combos existentes]</div>
+      </div>
+      <div class="email-body">
+        <p>Hola [nombre],</p>
+        <p>Te escribo porque sé que venís lidiando con el problema de stock negativo en tus combos, y quiero contarte en qué estamos.</p>
+        <p>Esta semana deployamos un fix que resuelve el problema de stock negativo para <strong>combos nuevos</strong>. Eso significa que si creás un combo de ahora en adelante, la sincronización de stock va a funcionar correctamente y no vas a ver valores negativos.</p>
+        <p>Para los combos que ya tenés creados, todavía no pudimos aplicar el fix porque la corrección requiere una migración de datos que necesitamos hacer con más cuidado para no afectar tu historial de movimientos. Estamos planificando esa migración para el próximo sprint (las próximas 2-3 semanas).</p>
+        <p>Mientras tanto, si te aparece un stock negativo en un combo existente, seguí corrigiéndolo como venías haciendo. Sé que es un dolor y lamento no poder resolverlo todo de una. <strong>Te voy a avisar personalmente apenas tengamos la migración lista.</strong></p>
+        <p>Si tenés alguna duda o querés que te ayude con algo puntual, escribime.</p>
+        <div class="signature">
+          Saludos,<br>
+          <strong>Lucas Castillo</strong><br>
+          Product Owner, Módulo de Inventario — Ecomm-App
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:1rem;">
+      <h4>¿Por qué este enfoque de comunicación?</h4>
+      <p style="font-size:.88rem;color:var(--text-light);line-height:1.8;">
+        <strong>Transparencia:</strong> Le digo exactamente qué hicimos y qué no. No vendo una solución parcial como completa.
+        <strong>Empatía operativa:</strong> Reconozco que el workaround manual sigue siendo necesario por un tiempo.
+        <strong>Compromiso concreto:</strong> Le doy horizonte de tiempo y me comprometo a avisarle personalmente.
+        <strong>Cercanía:</strong> Firmo con nombre y rol. No es un mail genérico — es una persona que se hace cargo.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Challenge Técnico — Product Owner | Módulo de Inventario y Stock</p>
+  <p style="margin-top:.25rem;">Lucas Castillo — Mayo 2026</p>
+</footer>
+
+<script>
+  // Tab switching
+  function showUser(id) {
+    document.querySelectorAll('.user-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.user-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('user-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // Story accordion
+  function toggleStory(el) {
+    const body = el.nextElementSibling;
+    body.classList.toggle('open');
+  }
+
+  // Nav active state on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
