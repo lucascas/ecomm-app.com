@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Challenge PO — Lucas Castillo | Ecomm-App</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #0f172a;
+  --accent: #2563eb;
+  --accent-light: #eff6ff;
+  --accent-subtle: #dbeafe;
+  --text: #1e293b;
+  --text-sec: #64748b;
+  --text-light: #94a3b8;
+  --border: #e2e8f0;
+  --border-light: #f1f5f9;
+  --bg: #ffffff;
+  --bg-alt: #f8fafc;
+  --success: #059669;
+  --success-light: #ecfdf5;
+  --warning: #d97706;
+  --warning-light: #fffbeb;
+  --danger: #dc2626;
+  --danger-light: #fef2f2;
+  --purple: #7c3aed;
+  --purple-light: #f5f3ff;
+  --radius: 12px;
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* NAV */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border); padding: 0 40px; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand { font-weight: 700; font-size: 14px; color: var(--primary); }
+.nav-brand span { color: var(--accent); }
+.nav-links { display: flex; gap: 4px; list-style: none; }
+.nav-links a {
+  font-size: 11px; font-weight: 500; color: var(--text-sec); text-decoration: none;
+  padding: 5px 10px; border-radius: 6px; transition: all 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--accent); background: var(--accent-light); }
+
+/* HERO */
+.hero {
+  margin-top: 56px; background: var(--primary); color: white;
+  padding: 72px 40px 60px; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -50%; right: -20%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 70%);
+}
+.hero-inner { max-width: 800px; margin: 0 auto; position: relative; }
+.hero-tag { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: #60a5fa; margin-bottom: 14px; display: block; }
+.hero h1 { font-size: 34px; font-weight: 800; line-height: 1.2; letter-spacing: -0.5px; margin-bottom: 14px; }
+.hero h1 span { color: #60a5fa; }
+.hero-sub { font-size: 16px; color: #94a3b8; max-width: 580px; }
+.hero-meta { margin-top: 28px; display: flex; gap: 28px; font-size: 13px; color: #94a3b8; }
+.hero-meta strong { color: white; font-weight: 600; }
+
+/* SECTIONS */
+.section { max-width: 860px; margin: 0 auto; padding: 64px 40px; }
+.parte-header {
+  background: var(--primary); color: white; padding: 20px 40px;
+  max-width: 860px; margin: 0 auto; border-radius: var(--radius);
+  display: flex; align-items: center; gap: 14px;
+}
+.parte-header .parte-num {
+  background: var(--accent); width: 36px; height: 36px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; flex-shrink: 0;
+}
+.parte-header h2 { font-size: 18px; font-weight: 700; }
+.parte-header .parte-sub { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+
+.punto-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1.2px; color: var(--accent); margin-bottom: 10px;
+}
+.punto-label .num {
+  background: var(--accent); color: white; width: 20px; height: 20px;
+  border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 10px;
+}
+.section h3 { font-size: 22px; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
+.section .lead { font-size: 14px; color: var(--text-sec); margin-bottom: 28px; max-width: 600px; }
+
+.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+.spacer { padding: 20px 0; }
+
+/* USER CARDS */
+.user-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.user-card {
+  border: 1px solid var(--border); border-radius: var(--radius); padding: 20px;
+  background: white; transition: all 0.3s;
+}
+.user-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.user-type { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-sec); margin-bottom: 2px; }
+.user-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--primary); }
+.user-row { margin-bottom: 10px; }
+.user-row-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-light); margin-bottom: 3px; }
+.user-row p { font-size: 12px; color: var(--text); line-height: 1.5; }
+
+/* QA ITEMS */
+.qa-grid { display: grid; gap: 10px; }
+.qa-item { background: var(--bg-alt); border-radius: 8px; padding: 14px 18px; }
+.qa-item .q-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--accent); margin-bottom: 3px; }
+.qa-item .q-text { font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 5px; line-height: 1.4; }
+.qa-item .q-why { font-size: 11px; color: var(--text-sec); line-height: 1.5; }
+
+/* TABS */
+.tab-bar { display: flex; gap: 6px; margin-bottom: 20px; }
+.tab-btn {
+  padding: 8px 18px; border-radius: 8px; cursor: pointer; border: 2px solid var(--border);
+  background: white; font-size: 12px; font-weight: 600; transition: all 0.2s; font-family: inherit;
+}
+.tab-btn:hover { border-color: var(--accent); }
+.tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* VS BLOCKS */
+.vs-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.vs-card { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.vs-card .vs-body { padding: 14px 16px; }
+.vs-card .vs-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+.vs-card .vs-row:last-child { margin-bottom: 0; }
+.vs-card .vs-icon { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+.vs-card .vs-text { font-size: 12px; line-height: 1.5; color: var(--text); }
+.vs-card.highlight { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+
+/* PRIORITY MATRIX */
+.matrix-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+.matrix-svg-box { background: var(--bg-alt); border-radius: var(--radius); padding: 20px; border: 1px solid var(--border); }
+.matrix-svg-box h4 { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 12px; text-align: center; }
+.matrix-legend { display: flex; flex-direction: column; gap: 10px; }
+.matrix-legend-card { border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; background: white; }
+.matrix-legend-card.top { border-color: var(--success); background: var(--success-light); }
+.matrix-legend-card.backlog { opacity: 0.6; }
+.matrix-legend-card h5 { font-size: 12px; font-weight: 700; margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
+.matrix-legend-card p { font-size: 11px; color: var(--text-sec); line-height: 1.4; }
+.score-row { display: flex; gap: 6px; margin-top: 6px; }
+.score-pill { font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+.score-pill.crit { background: #fee2e2; color: #991b1b; }
+.score-pill.med { background: #fef3c7; color: #92400e; }
+.score-pill.low { background: #d1fae5; color: #065f46; }
+.score-pill.high-e { background: #ede9fe; color: #5b21b6; }
+.score-pill.med-e { background: #dbeafe; color: #1e40af; }
+
+/* DECISION BOX */
+.decision-box {
+  background: var(--accent-light); border: 1px solid var(--accent-subtle);
+  border-radius: var(--radius); padding: 24px 28px; margin-top: 20px;
+}
+.decision-box h4 { font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
+.decision-reasons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.reason { font-size: 12px; color: var(--text); line-height: 1.5; padding-left: 14px; border-left: 2px solid var(--accent); }
+.reason strong { font-weight: 600; display: block; margin-bottom: 1px; }
+
+/* EPICS */
+.epics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.epic-card { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.epic-card:hover { box-shadow: var(--shadow-md); }
+.epic-head { padding: 16px 20px; display: flex; justify-content: space-between; align-items: flex-start; }
+.epic-1 .epic-head { background: var(--danger-light); }
+.epic-2 .epic-head { background: var(--success-light); }
+.epic-head h4 { font-size: 13px; font-weight: 700; line-height: 1.3; }
+.epic-1 .epic-head h4 { color: #991b1b; }
+.epic-2 .epic-head h4 { color: #166534; }
+.epic-sp { font-size: 20px; font-weight: 800; white-space: nowrap; }
+.epic-1 .epic-sp { color: #991b1b; }
+.epic-2 .epic-sp { color: #166534; }
+.epic-sp small { font-size: 11px; font-weight: 500; }
+.epic-body { padding: 16px 20px; }
+.epic-objective { font-size: 12px; color: var(--text-sec); margin-bottom: 6px; line-height: 1.5; }
+.epic-criteria { font-size: 11px; color: var(--text); line-height: 1.6; padding: 10px 14px; background: var(--bg-alt); border-radius: 6px; margin-top: 8px; }
+.epic-criteria strong { color: var(--primary); }
+
+/* STORIES */
+.story-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border-light); font-size: 12px; }
+.story-row:last-child { border-bottom: none; }
+.story-id { font-weight: 600; color: var(--text-sec); font-size: 10px; width: 50px; flex-shrink: 0; }
+.story-name { flex: 1; font-weight: 500; color: var(--text); }
+.story-sp { background: var(--bg-alt); font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px; color: var(--text-sec); flex-shrink: 0; margin-left: 8px; }
+
+/* SP BAR CHART */
+.sp-chart { background: var(--bg-alt); border-radius: var(--radius); padding: 22px; border: 1px solid var(--border); margin-top: 20px; }
+.sp-chart h4 { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 14px; text-align: center; }
+.sp-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.sp-bar-label { width: 55px; text-align: right; font-size: 10px; font-weight: 600; color: var(--text-sec); flex-shrink: 0; }
+.sp-bar-track { flex: 1; background: var(--border-light); border-radius: 5px; height: 22px; overflow: hidden; }
+.sp-bar-fill { height: 100%; border-radius: 5px; display: flex; align-items: center; padding-left: 8px; font-size: 10px; color: white; font-weight: 700; }
+.sp-bar-fill.e1 { background: linear-gradient(90deg, #ef4444, #f87171); }
+.sp-bar-fill.e2 { background: linear-gradient(90deg, #10b981, #34d399); }
+.sp-bar-fill.spike-bar { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+
+/* GHERKIN */
+.gherkin-block {
+  background: var(--primary); border-radius: 8px; padding: 14px 18px; margin-top: 10px;
+  font-family: 'Courier New', monospace; font-size: 11px; line-height: 1.7; color: #e2e8f0; overflow-x: auto;
+}
+.gherkin-block .kw { color: #60a5fa; font-weight: 700; }
+.gherkin-block .str { color: #34d399; }
+.gherkin-block .scenario { color: #fbbf24; font-weight: 700; }
+
+/* DEPS TABLE */
+.deps-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 16px; }
+.deps-table th { background: var(--primary); color: white; padding: 9px 12px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; }
+.deps-table th:first-child { border-radius: 8px 0 0 0; }
+.deps-table th:last-child { border-radius: 0 8px 0 0; }
+.deps-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+.deps-table tr:hover td { background: var(--bg-alt); }
+.dep-tag { display: inline-block; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px; }
+.dep-tag.blocker { background: #fee2e2; color: #991b1b; }
+.dep-tag.required { background: #fef3c7; color: #92400e; }
+
+/* GANTT */
+.gantt { background: var(--bg-alt); border-radius: var(--radius); padding: 24px; overflow-x: auto; border: 1px solid var(--border); margin-top: 20px; }
+.gantt h4 { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 18px; }
+.gantt-chart { display: grid; grid-template-columns: 100px repeat(10, 1fr); gap: 0; font-size: 11px; min-width: 620px; }
+.gantt-header { display: contents; }
+.gantt-header-cell { padding: 5px 3px; text-align: center; font-weight: 600; color: var(--text-sec); font-size: 10px; border-bottom: 2px solid var(--border); }
+.gantt-header-cell.label-cell { text-align: left; font-size: 10px; color: var(--primary); }
+.gantt-row { display: contents; }
+.gantt-row-label { padding: 5px 6px 5px 0; font-weight: 600; color: var(--primary); font-size: 10px; display: flex; align-items: center; border-bottom: 1px solid var(--border-light); white-space: nowrap; }
+.gantt-row-label .role-tag { font-size: 8px; font-weight: 700; padding: 1px 5px; border-radius: 3px; margin-left: 4px; }
+.gantt-row-label .be { background: #dbeafe; color: #1e40af; }
+.gantt-row-label .fe { background: #fef3c7; color: #92400e; }
+.gantt-row-label .qa { background: #ede9fe; color: #5b21b6; }
+.gantt-cell { padding: 5px 2px; border-bottom: 1px solid var(--border-light); min-height: 32px; }
+.gantt-bar { height: 24px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 600; color: white; white-space: nowrap; padding: 0 5px; }
+.gantt-bar.epic1 { background: linear-gradient(135deg, #ef4444, #dc2626); }
+.gantt-bar.epic2 { background: linear-gradient(135deg, #10b981, #059669); }
+.gantt-bar.spike { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.gantt-bar.qa-bar { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+.gantt-bar .sp-tag { font-size: 8px; font-weight: 800; opacity: 0.85; margin-left: 3px; }
+.gantt-legend { display: flex; gap: 16px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+.gantt-legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--text-sec); }
+.gantt-legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+
+/* OPTIONS */
+.options-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.option-card { border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; text-align: center; }
+.option-card.chosen { border-color: var(--success); background: var(--success-light); box-shadow: 0 0 0 1px var(--success); }
+.option-card.rejected { opacity: 0.5; }
+.option-letter { font-size: 26px; font-weight: 800; margin-bottom: 6px; }
+.option-card.chosen .option-letter { color: var(--success); }
+.option-card.rejected .option-letter { color: var(--text-light); }
+.option-title { font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 6px; }
+.option-desc { font-size: 12px; color: var(--text-sec); line-height: 1.4; margin-bottom: 10px; }
+.option-verdict { display: inline-block; font-size: 10px; font-weight: 700; padding: 3px 14px; border-radius: 16px; text-transform: uppercase; letter-spacing: 0.5px; }
+.option-card.chosen .option-verdict { background: var(--success); color: white; }
+.option-card.rejected .option-verdict { background: var(--border-light); color: var(--text-light); }
+
+.tradeoff-box { background: var(--success-light); border: 1px solid #a7f3d0; border-radius: var(--radius); padding: 22px 26px; margin-top: 18px; }
+.tradeoff-box h4 { font-size: 14px; font-weight: 700; color: #065f46; margin-bottom: 10px; }
+.tradeoff-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.tradeoff-item h5 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--success); margin-bottom: 3px; }
+.tradeoff-item p { font-size: 12px; color: var(--text); line-height: 1.5; }
+
+/* EMAIL */
+.email-preview { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 26px 30px; box-shadow: var(--shadow-md); position: relative; }
+.email-preview::before { content: 'Preview del mensaje'; position: absolute; top: -9px; left: 18px; background: white; padding: 0 7px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); }
+.email-preview p { font-size: 13px; color: var(--text); line-height: 1.7; margin-bottom: 10px; }
+.email-preview p:last-child { margin-bottom: 0; }
+.email-preview .signature { color: var(--text-sec); font-size: 12px; border-top: 1px solid var(--border-light); padding-top: 10px; margin-top: 14px; }
+
+.comm-principles { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin-top: 18px; }
+.comm-pill { background: var(--bg-alt); border-radius: 8px; padding: 14px; text-align: center; }
+.comm-pill .emoji { font-size: 22px; margin-bottom: 4px; }
+.comm-pill h5 { font-size: 11px; font-weight: 700; color: var(--primary); margin-bottom: 3px; }
+.comm-pill p { font-size: 10px; color: var(--text-sec); line-height: 1.3; }
+
+/* EXPANDABLE */
+.expandable { margin-top: 18px; }
+.expand-trigger { background: none; border: 1px solid var(--border); border-radius: 8px; padding: 10px 18px; font-size: 12px; font-weight: 500; color: var(--accent); cursor: pointer; display: flex; align-items: center; gap: 7px; transition: all 0.2s; width: 100%; text-align: left; font-family: inherit; }
+.expand-trigger:hover { background: var(--accent-light); border-color: var(--accent-subtle); }
+.expand-trigger .arrow { transition: transform 0.3s; font-size: 11px; }
+.expand-trigger.open .arrow { transform: rotate(90deg); }
+.expand-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+.expand-content.open { max-height: 3000px; }
+.expand-inner { padding: 18px 0 0; }
+
+/* Q CARDS (tech lead) */
+.questions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.q-card { background: var(--bg-alt); border-radius: 8px; padding: 14px 16px; }
+.q-card .q-num { font-size: 9px; font-weight: 700; color: var(--accent); margin-bottom: 3px; }
+.q-card p { font-size: 12px; color: var(--text); line-height: 1.4; font-weight: 500; }
+.q-card .q-why { font-size: 10px; color: var(--text-sec); font-weight: 400; margin-top: 5px; line-height: 1.4; }
+
+/* FOOTER */
+.footer-section { background: var(--primary); color: white; padding: 40px; text-align: center; }
+.footer-section p { font-size: 13px; color: #94a3b8; max-width: 500px; margin: 0 auto; line-height: 1.6; }
+.footer-section .ia-note { margin-top: 18px; font-size: 11px; color: #64748b; border-top: 1px solid #334155; padding-top: 14px; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .nav { padding: 0 16px; }
+  .nav-links { display: none; }
+  .hero { padding: 50px 16px 40px; }
+  .hero h1 { font-size: 24px; }
+  .section { padding: 40px 16px; }
+  .user-grid, .epics-grid, .options-grid, .tradeoff-grid, .matrix-wrapper, .vs-grid, .decision-reasons, .comm-principles, .questions-grid { grid-template-columns: 1fr; }
+  .hero-meta { flex-direction: column; gap: 6px; }
+  .gantt-chart { min-width: 580px; }
+}
+
+@media print {
+  .nav { display: none; }
+  .hero { margin-top: 0; }
+  .expand-trigger { display: none; }
+  .expand-content { max-height: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">Challenge PO <span>Ecomm-App</span></div>
+  <ul class="nav-links">
+    <li><a href="#p1">Parte 1</a></li>
+    <li><a href="#p1-preguntas">Preguntas</a></li>
+    <li><a href="#p1-problemas">Problemas</a></li>
+    <li><a href="#p1-priorizacion">Priorizacion</a></li>
+    <li><a href="#p2">Parte 2</a></li>
+    <li><a href="#p3">Parte 3</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <span class="hero-tag">Challenge Tecnico &mdash; Product Owner</span>
+    <h1>Modulo de <span>Inventario y Stock</span></h1>
+    <p class="hero-sub">Tres usuarios con problemas distintos, un sprint de 40 story points, y una decision tecnica que no puede esperar.</p>
+    <div class="hero-meta">
+      <div><strong>Lucas Castillo</strong></div>
+      <div><strong>Mayo 2026</strong></div>
+      <div><strong>Modulo:</strong> Inventario y Stock</div>
+    </div>
+  </div>
+</section>
+
+<!-- AI DISCLOSURE -->
+<div style="max-width:860px;margin:0 auto;padding:20px 40px 0;">
+  <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:18px 24px;font-size:13px;color:#92400e;line-height:1.7;">
+    <strong style="color:#b45309;">&#9888; Nota sobre uso de IA:</strong> Utilice Claude AI (Anthropic) como asistente para investigar la plataforma de Ecomm-App y su modulo de stock, estructurar y validar la coherencia interna del documento (que los SP cierren a 40, que las dependencias sean consistentes), y como sparring para desafiar mis decisiones de priorizacion. Todas las decisiones de producto, la logica de priorizacion y los criterios de negocio son mios.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- PARTE 1 — DESCUBRIMIENTO CON USUARIOS     -->
+<!-- ══════════════════════════════════════════ -->
+<div class="spacer"></div>
+<div class="parte-header" id="p1">
+  <div class="parte-num">1</div>
+  <div><h2>Descubrimiento con usuarios</h2><div class="parte-sub">Preguntas de discovery, problemas de fondo y priorizacion</div></div>
+</div>
+
+<!-- ── 1. Preguntas de discovery ── -->
+<section class="section" id="p1-preguntas">
+  <div class="punto-label"><span class="num">1</span> Preguntas de discovery</div>
+  <h3>9 preguntas, 3 por usuario</h3>
+  <p class="lead">Cada pregunta busca revelar el problema real detras del pedido, no confirmar lo que el usuario ya cree.</p>
+
+  <!-- Contexto de cada usuario -->
+  <div class="user-grid" style="margin-bottom:24px;">
+    <div class="user-card">
+      <div class="user-type">Usuario A</div>
+      <h4>Mayorista</h4>
+      <div class="user-row"><div class="user-row-label">Situacion</div><p>3 depositos, 2.000+ SKUs, equipo usa app en celular.</p></div>
+      <div class="user-row"><div class="user-row-label">Queja</div><p>Reporte lento, muestra datos de ayer.</p></div>
+      <div class="user-row"><div class="user-row-label">Pide</div><p>Dashboard en tiempo real con alertas de quiebre.</p></div>
+    </div>
+    <div class="user-card" style="border-color:var(--accent);">
+      <div class="user-type">Usuario B</div>
+      <h4>Tienda fisica + ML</h4>
+      <div class="user-row"><div class="user-row-label">Situacion</div><p>Local en Palermo + Mercado Libre.</p></div>
+      <div class="user-row"><div class="user-row-label">Queja</div><p>Ventas simultaneas generan stock negativo.</p></div>
+      <div class="user-row"><div class="user-row-label">Pide</div><p>Bloquear ML cuando stock = 0 en local.</p></div>
+    </div>
+    <div class="user-card">
+      <div class="user-type">Usuario C</div>
+      <h4>Dropshipper</h4>
+      <div class="user-row"><div class="user-row-label">Situacion</div><p>Sin stock fisico. Proveedores mandan Excel semanal.</p></div>
+      <div class="user-row"><div class="user-row-label">Queja</div><p>Cargar Excel lleva 2hs, se equivoca seguido.</p></div>
+      <div class="user-row"><div class="user-row-label">Pide</div><p>Importacion con validacion y preview.</p></div>
+    </div>
+  </div>
+
+  <!-- Tabs para preguntas -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showTab('ua',this)">Usuario A</button>
+    <button class="tab-btn" onclick="showTab('ub',this)">Usuario B</button>
+    <button class="tab-btn" onclick="showTab('uc',this)">Usuario C</button>
+  </div>
+
+  <div class="tab-panel active" id="tab-ua">
+    <div class="qa-grid">
+      <div class="qa-item"><div class="q-label">Pregunta 1</div><div class="q-text">"Cuando decis que el reporte muestra datos de ayer, como te diste cuenta? Que decision estabas intentando tomar?"</div><div class="q-why">Revela el job-to-be-done. Si estaba decidiendo una reposicion con datos viejos, el costo es un quiebre de stock.</div></div>
+      <div class="qa-item"><div class="q-label">Pregunta 2</div><div class="q-text">"Tu equipo de deposito, como comunica las diferencias entre lo que ve en la app y lo que hay fisicamente?"</div><div class="q-why">Si hay proceso paralelo (WhatsApp, planilla), el problema es de confianza en los datos, no de visualizacion.</div></div>
+      <div class="qa-item"><div class="q-label">Pregunta 3</div><div class="q-text">"De los 3 depositos, hay alguno con mas problemas de precision? Hay diferencia en como operan?"</div><div class="q-why">Si un deposito tiene mas discrepancias, el problema es operativo, no tecnologico. Cambiaria la solucion.</div></div>
+    </div>
+  </div>
+  <div class="tab-panel" id="tab-ub">
+    <div class="qa-grid">
+      <div class="qa-item"><div class="q-label">Pregunta 1</div><div class="q-text">"Cuando se genera el stock negativo, podes reconstruir la secuencia? Primero vendes en el local y despues entra la venta de ML, o al reves?"</div><div class="q-why">Ventana de la race condition. Segundos = concurrencia pura. Horas = delay de API. Solucion tecnica muy diferente.</div></div>
+      <div class="qa-item"><div class="q-label">Pregunta 2</div><div class="q-text">"Cuantas veces por semana te pasa? En cuantos SKUs? Cuanto tiempo te lleva la correccion manual?"</div><div class="q-why">Cuantifico frecuencia e impacto. 3 veces/semana x 20 min = 5 horas/mes de trabajo manual perdido.</div></div>
+      <div class="qa-item"><div class="q-label">Pregunta 3</div><div class="q-text">"Si bloqueamos ML cuando stock=0 en local, cuantas ventas de ML estimas que perderias por dia?"</div><div class="q-why">Desafio la solucion del usuario. Bloquear ML podria ser peor que el problema: pierde ventas en canal de alto trafico.</div></div>
+    </div>
+  </div>
+  <div class="tab-panel" id="tab-uc">
+    <div class="qa-grid">
+      <div class="qa-item"><div class="q-label">Pregunta 1</div><div class="q-text">"Cuantos proveedores te mandan Excel, y todos usan el mismo formato?"</div><div class="q-why">5 proveedores con 5 formatos = complejidad multiplicada. Si cambian sin aviso, necesito mapeo flexible.</div></div>
+      <div class="qa-item"><div class="q-label">Pregunta 2</div><div class="q-text">"Cuando decis que te equivocas seguido, que tipo de errores son? SKUs duplicados, cantidades incorrectas, productos inexistentes?"</div><div class="q-why">Cada tipo de error requiere validacion diferente. Un SKU duplicado se detecta facil; un producto inexistente tiene impacto mucho peor.</div></div>
+      <div class="qa-item"><div class="q-label">Pregunta 3</div><div class="q-text">"Entre una carga y la siguiente, necesitas actualizar stock? Si un proveedor se queda sin algo, como te enteras?"</div><div class="q-why">6 dias de stock desactualizado. El problema podria ser mas profundo que la importacion.</div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── 2. Problema de fondo de cada usuario ── -->
+<section class="section" id="p1-problemas">
+  <div class="punto-label"><span class="num">2</span> Problema de fondo</div>
+  <h3>Lo que piden no es lo que necesitan</h3>
+  <p class="lead">Cada usuario llega con una solucion en la cabeza. El trabajo del PO es encontrar el problema real.</p>
+
+  <div class="vs-grid">
+    <div class="vs-card">
+      <div class="vs-body">
+        <div style="font-size:11px;font-weight:700;color:var(--text-sec);margin-bottom:8px;">USUARIO A &mdash; MAYORISTA</div>
+        <div class="vs-row"><span class="vs-icon">&#10060;</span><div class="vs-text"><strong>Pide:</strong> Dashboard en tiempo real con alertas</div></div>
+        <div class="vs-row"><span class="vs-icon">&#9989;</span><div class="vs-text" style="color:var(--success);font-weight:600;">Necesita: Certeza de que el stock refleja la realidad fisica</div></div>
+        <div style="font-size:11px;color:var(--text-sec);margin-top:8px;line-height:1.4;">Un dashboard sobre datos que nacen tarde es un espejo de una mentira. Necesita integridad de datos antes que visualizacion.</div>
+      </div>
+    </div>
+    <div class="vs-card highlight">
+      <div class="vs-body">
+        <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:8px;">USUARIO B &mdash; TIENDA + ML</div>
+        <div class="vs-row"><span class="vs-icon">&#10060;</span><div class="vs-text"><strong>Pide:</strong> Bloquear ML cuando stock = 0</div></div>
+        <div class="vs-row"><span class="vs-icon">&#9989;</span><div class="vs-text" style="color:var(--success);font-weight:600;">Necesita: Reserva atomica que impida vender mas de lo que hay sin cerrar canales</div></div>
+        <div style="font-size:11px;color:var(--text-sec);margin-top:8px;line-height:1.4;">Su solucion destruye ventas para tapar un bug de concurrencia. Es un problema de integridad transaccional.</div>
+      </div>
+    </div>
+    <div class="vs-card">
+      <div class="vs-body">
+        <div style="font-size:11px;font-weight:700;color:var(--text-sec);margin-bottom:8px;">USUARIO C &mdash; DROPSHIPPER</div>
+        <div class="vs-row"><span class="vs-icon">&#10060;</span><div class="vs-text"><strong>Pide:</strong> Importacion con validacion y preview</div></div>
+        <div class="vs-row"><span class="vs-icon">&#9989;</span><div class="vs-text" style="color:var(--success);font-weight:600;">Necesita: Reducir dependencia de archivos manuales de terceros</div></div>
+        <div style="font-size:11px;color:var(--text-sec);margin-top:8px;line-height:1.4;">A corto plazo la importacion validada resuelve las 2hs. A mediano plazo necesita integracion directa con proveedores.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── 3. Priorizacion ── -->
+<section class="section" id="p1-priorizacion">
+  <div class="punto-label"><span class="num">3</span> Priorizacion</div>
+  <h3>A quien resuelvo este sprint</h3>
+  <p class="lead">Evaluacion de impacto vs. esfuerzo para justificar la decision.</p>
+
+  <div class="matrix-wrapper">
+    <div class="matrix-svg-box">
+      <h4>Matriz Impacto vs. Esfuerzo</h4>
+      <svg viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;margin:0 auto;">
+        <rect x="90" y="30" width="155" height="130" rx="6" fill="#fef2f2" opacity="0.4"/>
+        <rect x="245" y="30" width="155" height="130" rx="6" fill="#f0fdf4" opacity="0.5"/>
+        <rect x="90" y="160" width="155" height="130" rx="6" fill="#fefce8" opacity="0.3"/>
+        <rect x="245" y="160" width="155" height="130" rx="6" fill="#eff6ff" opacity="0.3"/>
+        <text x="167" y="52" text-anchor="middle" fill="#dc2626" font-size="9" font-weight="700" opacity="0.5">ALTO IMPACTO</text>
+        <text x="167" y="62" text-anchor="middle" fill="#dc2626" font-size="9" font-weight="700" opacity="0.5">ALTO ESFUERZO</text>
+        <rect x="268" y="38" width="108" height="20" rx="10" fill="#059669"/>
+        <text x="322" y="52" text-anchor="middle" fill="white" font-size="9" font-weight="700">HACER PRIMERO</text>
+        <text x="167" y="182" text-anchor="middle" fill="#ca8a04" font-size="9" font-weight="700" opacity="0.4">BAJO IMPACTO</text>
+        <text x="167" y="192" text-anchor="middle" fill="#ca8a04" font-size="9" font-weight="700" opacity="0.4">ALTO ESFUERZO</text>
+        <text x="322" y="182" text-anchor="middle" fill="#2563eb" font-size="9" font-weight="700" opacity="0.4">BAJO IMPACTO</text>
+        <text x="322" y="192" text-anchor="middle" fill="#2563eb" font-size="9" font-weight="700" opacity="0.4">BAJO ESFUERZO</text>
+        <line x1="90" y1="290" x2="400" y2="290" stroke="#cbd5e0" stroke-width="2"/>
+        <line x1="90" y1="290" x2="90" y2="30" stroke="#cbd5e0" stroke-width="2"/>
+        <text x="245" y="318" text-anchor="middle" fill="#64748b" font-size="11" font-weight="600">IMPACTO EN NEGOCIO &#8594;</text>
+        <text x="30" y="165" text-anchor="middle" fill="#64748b" font-size="11" font-weight="600" transform="rotate(-90 30 165)">FACILIDAD &#8594;</text>
+        <!-- A -->
+        <circle cx="200" cy="220" r="28" fill="#3b82f6" opacity="0.15"/>
+        <circle cx="200" cy="220" r="20" fill="#3b82f6" opacity="0.3"/>
+        <text x="200" y="224" text-anchor="middle" fill="#1e40af" font-size="16" font-weight="800">A</text>
+        <text x="200" y="258" text-anchor="middle" fill="#64748b" font-size="8">Impacto medio / Esfuerzo alto</text>
+        <!-- B -->
+        <circle cx="330" cy="95" r="32" fill="#059669" opacity="0.15"/>
+        <circle cx="330" cy="95" r="24" fill="#059669" opacity="0.3"/>
+        <text x="330" y="99" text-anchor="middle" fill="#065f46" font-size="18" font-weight="800">B</text>
+        <text x="358" y="75" fill="#059669" font-size="16">&#9733;</text>
+        <text x="330" y="138" text-anchor="middle" fill="#065f46" font-size="8" font-weight="600">Impacto critico / Esfuerzo medio</text>
+        <!-- C -->
+        <circle cx="290" cy="120" r="22" fill="#7c3aed" opacity="0.15"/>
+        <circle cx="290" cy="120" r="15" fill="#7c3aed" opacity="0.3"/>
+        <text x="265" y="115" text-anchor="middle" fill="#5b21b6" font-size="14" font-weight="800">C</text>
+        <text x="265" y="150" text-anchor="middle" fill="#64748b" font-size="8">Impacto acotado / Esfuerzo bajo</text>
+      </svg>
+    </div>
+    <div class="matrix-legend">
+      <div class="matrix-legend-card top">
+        <h5 style="color:#065f46;"><span style="font-size:14px;">&#9733;</span> Usuario B &mdash; Prioridad 1</h5>
+        <p>Bug de integridad de datos. Afecta a todo usuario multi-canal (diferencial de Ecomm-App). La solucion propuesta destruye valor. Costo progresivo.</p>
+        <div class="score-row"><span class="score-pill crit">Impacto: Critico</span><span class="score-pill med-e">Esfuerzo: Medio</span></div>
+      </div>
+      <div class="matrix-legend-card">
+        <h5 style="color:#5b21b6;">Usuario C &mdash; Prioridad 2</h5>
+        <p>Dolor operativo concreto (2hs/semana). Scope acotado, ROI inmediato. Complementa Epica 1 sin competir por recursos.</p>
+        <div class="score-row"><span class="score-pill med">Impacto: Medio</span><span class="score-pill low">Esfuerzo: Bajo</span></div>
+      </div>
+      <div class="matrix-legend-card backlog">
+        <h5 style="color:#1e40af;">Usuario A &mdash; Backlog</h5>
+        <p>Dolor de eficiencia, no de integridad. Requiere resolver confiabilidad de datos primero (parcialmente cubierto por Epica 1).</p>
+        <div class="score-row"><span class="score-pill med">Impacto: Medio</span><span class="score-pill high-e">Esfuerzo: Alto</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="decision-box">
+    <h4>Elijo al Usuario B</h4>
+    <div class="decision-reasons">
+      <div class="reason"><strong>Es un bug, no un feature.</strong> El stock negativo corrompe datos. Un bug erosiona la confianza en toda la plataforma.</div>
+      <div class="reason"><strong>Impacto transversal.</strong> Cualquier usuario multi-canal esta expuesto. Es un riesgo estructural del diferencial de Ecomm-App.</div>
+      <div class="reason"><strong>Costo progresivo.</strong> Cada dia sin fix, mas vendedores pierden confianza. Algunos vuelven a gestionar stock fuera de la plataforma.</div>
+      <div class="reason"><strong>Su solucion es peor que el problema.</strong> Bloquear ML le haria perder ventas. Tengo que proponer algo que el usuario no puede imaginar solo.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- PARTE 2 — EPICAS Y CARDS                   -->
+<!-- ══════════════════════════════════════════ -->
+<div class="spacer"></div>
+<div class="parte-header" id="p2">
+  <div class="parte-num">2</div>
+  <div><h2>Armado de epicas y cards</h2><div class="parte-sub">Backlog del sprint: 40 SP | 2 semanas | 2 BE + 1 FE + 1 QA</div></div>
+</div>
+
+<!-- ── 4. Epicas ── -->
+<section class="section" id="p2-epicas">
+  <div class="punto-label"><span class="num">4</span> Epicas</div>
+  <h3>2 epicas con objetivos y criterios de exito</h3>
+  <p class="lead">La Epica 1 resuelve el bug critico (Usuario B). La Epica 2 aprovecha la capacidad restante del sprint (Usuario C).</p>
+
+  <div class="epics-grid">
+    <div class="epic-card epic-1">
+      <div class="epic-head"><h4>Epica 1<br>Integridad de stock multi-canal</h4><div class="epic-sp">24 <small>SP</small></div></div>
+      <div class="epic-body">
+        <div class="epic-objective">Implementar reserva y validacion de stock que prevenga stock negativo en ventas simultaneas multi-canal.</div>
+        <div class="epic-criteria">
+          <strong>Criterios de exito:</strong><br>
+          &bull; Incidencias de stock negativo: de X a <strong>0</strong> en 30 dias post-deploy<br>
+          &bull; Tickets de soporte por correccion manual: <strong>-80%</strong> en 30 dias<br>
+          &bull; Tiempo de correccion manual: de ~20 min/incidencia a <strong>0</strong>
+        </div>
+      </div>
+    </div>
+    <div class="epic-card epic-2">
+      <div class="epic-head"><h4>Epica 2<br>Importacion validada de inventario</h4><div class="epic-sp">16 <small>SP</small></div></div>
+      <div class="epic-body">
+        <div class="epic-objective">Flujo de importacion desde Excel de proveedores con validacion, preview y registro.</div>
+        <div class="epic-criteria">
+          <strong>Criterios de exito:</strong><br>
+          &bull; Tiempo de importacion semanal: de 2 horas a <strong>&lt;15 min</strong><br>
+          &bull; Tasa de error post-importacion: <strong>&lt;5%</strong><br>
+          &bull; Adopcion del nuevo flujo: <strong>70%</strong> en primer mes
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── 5 y 6. User stories con SP ── -->
+<section class="section" id="p2-stories">
+  <div class="punto-label"><span class="num">5-6</span> User stories y estimaciones</div>
+  <h3>Stories con Gherkin y story points (Fibonacci)</h3>
+
+  <!-- Epica 1 stories -->
+  <div style="margin-bottom:28px;">
+    <h4 style="font-size:14px;font-weight:700;color:#991b1b;margin-bottom:12px;">Epica 1 &mdash; Integridad de stock multi-canal (24 SP)</h4>
+    <div class="story-row"><span class="story-id">US-1.4</span><span class="story-name">Spike: auditoria del trigger de decremento</span><span class="story-sp">3 SP</span></div>
+    <div class="story-row"><span class="story-id">US-1.1</span><span class="story-name">Validacion atomica antes de confirmar decremento</span><span class="story-sp">8 SP</span></div>
+    <div class="story-row"><span class="story-id">US-1.2</span><span class="story-name">Reconciliacion de discrepancias entre canales</span><span class="story-sp">8 SP</span></div>
+    <div class="story-row"><span class="story-id">US-1.3</span><span class="story-name">Alerta de stock minimo por canal y deposito</span><span class="story-sp">5 SP</span></div>
+  </div>
+
+  <!-- Epica 2 stories -->
+  <div style="margin-bottom:20px;">
+    <h4 style="font-size:14px;font-weight:700;color:#166534;margin-bottom:12px;">Epica 2 &mdash; Importacion validada de inventario (16 SP)</h4>
+    <div class="story-row"><span class="story-id">US-2.1</span><span class="story-name">Importacion con validacion, mapeo y vista previa</span><span class="story-sp">13 SP</span></div>
+    <div class="story-row"><span class="story-id">US-2.2</span><span class="story-name">Historial de importaciones con detalle</span><span class="story-sp">3 SP</span></div>
+  </div>
+
+  <!-- SP bar chart -->
+  <div class="sp-chart">
+    <h4>Distribucion de Story Points &mdash; 40 SP total</h4>
+    <div class="sp-bar-row"><div class="sp-bar-label">US-1.4</div><div class="sp-bar-track"><div class="sp-bar-fill spike-bar" style="width:7.5%;">3</div></div></div>
+    <div class="sp-bar-row"><div class="sp-bar-label">US-1.1</div><div class="sp-bar-track"><div class="sp-bar-fill e1" style="width:20%;">8</div></div></div>
+    <div class="sp-bar-row"><div class="sp-bar-label">US-1.2</div><div class="sp-bar-track"><div class="sp-bar-fill e1" style="width:20%;">8</div></div></div>
+    <div class="sp-bar-row"><div class="sp-bar-label">US-1.3</div><div class="sp-bar-track"><div class="sp-bar-fill e1" style="width:12.5%;">5</div></div></div>
+    <div class="sp-bar-row"><div class="sp-bar-label">US-2.1</div><div class="sp-bar-track"><div class="sp-bar-fill e2" style="width:32.5%;">13</div></div></div>
+    <div class="sp-bar-row"><div class="sp-bar-label">US-2.2</div><div class="sp-bar-track"><div class="sp-bar-fill e2" style="width:7.5%;">3</div></div></div>
+    <div style="display:flex;gap:16px;justify-content:center;margin-top:12px;font-size:10px;color:var(--text-sec);">
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#ef4444;vertical-align:middle;margin-right:3px;"></span>Epica 1 (24 SP)</span>
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#10b981;vertical-align:middle;margin-right:3px;"></span>Epica 2 (16 SP)</span>
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#f59e0b;vertical-align:middle;margin-right:3px;"></span>Spike (3 SP)</span>
+    </div>
+  </div>
+
+  <!-- Gherkin expandable -->
+  <div class="expandable">
+    <button class="expand-trigger" onclick="toggleExpand(this)"><span class="arrow">&#9654;</span> Ver criterios de aceptacion (Gherkin) de las stories principales</button>
+    <div class="expand-content"><div class="expand-inner">
+      <h4 style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--primary);">US-1.1: Validacion atomica de stock</h4>
+      <div class="gherkin-block">
+<span class="scenario">Scenario:</span> Venta exitosa con stock disponible<br>
+&nbsp;&nbsp;<span class="kw">Given</span> producto con SKU <span class="str">"ABC-001"</span> y stock = 5<br>
+&nbsp;&nbsp;<span class="kw">When</span> se confirma venta de 1u desde Mercado Libre<br>
+&nbsp;&nbsp;<span class="kw">Then</span> stock se decrementa a 4 y se registra movimiento<br><br>
+<span class="scenario">Scenario:</span> Venta simultanea sin stock suficiente<br>
+&nbsp;&nbsp;<span class="kw">Given</span> producto con SKU <span class="str">"ABC-001"</span> y stock = 1<br>
+&nbsp;&nbsp;<span class="kw">When</span> se confirma venta de 1u desde ML<br>
+&nbsp;&nbsp;<span class="kw">And</span> simultaneamente se confirma venta de 1u desde Local<br>
+&nbsp;&nbsp;<span class="kw">Then</span> solo una venta decrementa a 0<br>
+&nbsp;&nbsp;<span class="kw">And</span> la segunda recibe error de stock insuficiente<br>
+&nbsp;&nbsp;<span class="kw">And</span> el stock <strong style="color:#f87171;">nunca queda en valor negativo</strong>
+      </div>
+      <h4 style="font-size:13px;font-weight:700;margin:20px 0 10px;color:var(--primary);">US-2.1: Importacion con validacion y preview</h4>
+      <div class="gherkin-block">
+<span class="scenario">Scenario:</span> Upload con errores de validacion<br>
+&nbsp;&nbsp;<span class="kw">Given</span> Excel con SKU duplicado y cantidad negativa<br>
+&nbsp;&nbsp;<span class="kw">When</span> el vendedor sube el archivo<br>
+&nbsp;&nbsp;<span class="kw">Then</span> filas erroneas resaltadas con mensaje descriptivo<br>
+&nbsp;&nbsp;<span class="kw">And</span> puede corregir en preview o descartar filas<br>
+&nbsp;&nbsp;<span class="kw">And</span> solo puede confirmar sin errores bloqueantes
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── 7. Dependencias + Roadmap ── -->
+<section class="section" id="p2-deps">
+  <div class="punto-label"><span class="num">7</span> Dependencias y roadmap</div>
+  <h3>Que resolver antes de arrancar</h3>
+
+  <table class="deps-table">
+    <thead><tr><th>Dependencia</th><th>Tipo</th><th>Impacta</th><th>Descripcion</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Auditoria del trigger</strong></td><td><span class="dep-tag blocker">Bloqueante</span></td><td>US-1.1</td><td>US-1.4 debe completarse antes. El tech lead advirtio que tocar el trigger puede romper el historial.</td></tr>
+      <tr><td><strong>APIs de stock externas</strong></td><td><span class="dep-tag required">Requerido</span></td><td>US-1.2</td><td>Verificar permisos de ML y Tiendanube para leer stock. Conocer rate limits.</td></tr>
+      <tr><td><strong>Excels reales de proveedores</strong></td><td><span class="dep-tag required">Requerido</span></td><td>US-2.1</td><td>Obtener 3-4 archivos reales de usuarios dropshippers para validar mapeo de columnas.</td></tr>
+      <tr><td><strong>Entorno testing multi-canal</strong></td><td><span class="dep-tag blocker">Bloqueante</span></td><td>US-1.1</td><td>QA necesita simular ventas simultaneas en multiples canales.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Gantt -->
+  <div class="gantt">
+    <h4>Roadmap del sprint &mdash; 2 semanas</h4>
+    <div class="gantt-chart">
+      <div class="gantt-header">
+        <div class="gantt-header-cell label-cell"></div>
+        <div class="gantt-header-cell" style="grid-column:2/7;font-size:11px;font-weight:700;color:var(--accent);">Semana 1</div>
+        <div class="gantt-header-cell" style="grid-column:7/12;font-size:11px;font-weight:700;color:var(--accent);">Semana 2</div>
+      </div>
+      <div class="gantt-header">
+        <div class="gantt-header-cell label-cell">Recurso</div>
+        <div class="gantt-header-cell">L</div><div class="gantt-header-cell">M</div><div class="gantt-header-cell">X</div><div class="gantt-header-cell">J</div><div class="gantt-header-cell">V</div>
+        <div class="gantt-header-cell">L</div><div class="gantt-header-cell">M</div><div class="gantt-header-cell">X</div><div class="gantt-header-cell">J</div><div class="gantt-header-cell">V</div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-row-label">BE-1 <span class="role-tag be">Backend</span></div>
+        <div class="gantt-cell"><div class="gantt-bar spike">US-1.4 <span class="sp-tag">3</span></div></div>
+        <div class="gantt-cell"></div>
+        <div class="gantt-cell" style="grid-column:4/7;"><div class="gantt-bar epic1">US-1.1 Validacion <span class="sp-tag">8</span></div></div>
+        <div class="gantt-cell" style="grid-column:7/9;"><div class="gantt-bar epic1" style="opacity:0.8;">US-1.1</div></div>
+        <div class="gantt-cell" style="grid-column:9/11;"><div class="gantt-bar epic1">US-1.2 <span class="sp-tag">8</span></div></div>
+        <div class="gantt-cell"></div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-row-label">BE-2 <span class="role-tag be">Backend</span></div>
+        <div class="gantt-cell"><div class="gantt-bar spike" style="opacity:0.7;">Mapeo</div></div>
+        <div class="gantt-cell"></div>
+        <div class="gantt-cell" style="grid-column:4/7;"><div class="gantt-bar epic1" style="opacity:0.8;">US-1.1 (pair)</div></div>
+        <div class="gantt-cell" style="grid-column:7/9;"><div class="gantt-bar epic2">US-2.1 BE <span class="sp-tag">13</span></div></div>
+        <div class="gantt-cell" style="grid-column:9/10;"><div class="gantt-bar epic1">US-1.3 <span class="sp-tag">5</span></div></div>
+        <div class="gantt-cell" style="grid-column:10/12;"><div class="gantt-bar epic2">US-2.2 <span class="sp-tag">3</span></div></div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-row-label">FE <span class="role-tag fe">Frontend</span></div>
+        <div class="gantt-cell" style="grid-column:2/6;"><div class="gantt-bar epic2">US-2.1 Maquetacion + UI <span class="sp-tag">13</span></div></div>
+        <div class="gantt-cell"></div>
+        <div class="gantt-cell" style="grid-column:7/9;"><div class="gantt-bar epic2" style="opacity:0.8;">US-2.1 integracion</div></div>
+        <div class="gantt-cell" style="grid-column:9/10;"><div class="gantt-bar epic1">US-1.2 vista</div></div>
+        <div class="gantt-cell" style="grid-column:10/12;"><div class="gantt-bar epic1">US-1.3 alertas</div></div>
+      </div>
+      <div class="gantt-row">
+        <div class="gantt-row-label">QA <span class="role-tag qa">Testing</span></div>
+        <div class="gantt-cell" style="grid-column:2/4;"><div class="gantt-bar qa-bar">Setup entorno</div></div>
+        <div class="gantt-cell" style="grid-column:4/6;"><div class="gantt-bar qa-bar" style="opacity:0.8;">Test US-1.4</div></div>
+        <div class="gantt-cell"></div>
+        <div class="gantt-cell" style="grid-column:7/9;"><div class="gantt-bar qa-bar">Test US-1.1 + US-2.1</div></div>
+        <div class="gantt-cell" style="grid-column:9/12;"><div class="gantt-bar qa-bar" style="opacity:0.85;">Test US-1.2 + 1.3 + 2.2</div></div>
+      </div>
+    </div>
+    <div class="gantt-legend">
+      <div class="gantt-legend-item"><div class="gantt-legend-dot" style="background:#ef4444;"></div>Epica 1 (24 SP)</div>
+      <div class="gantt-legend-item"><div class="gantt-legend-dot" style="background:#10b981;"></div>Epica 2 (16 SP)</div>
+      <div class="gantt-legend-item"><div class="gantt-legend-dot" style="background:#f59e0b;"></div>Spike</div>
+      <div class="gantt-legend-item"><div class="gantt-legend-dot" style="background:#8b5cf6;"></div>QA</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- PARTE 3 — COMUNICACION CON EQUIPO TECNICO  -->
+<!-- ══════════════════════════════════════════ -->
+<div class="spacer"></div>
+<div class="parte-header" id="p3">
+  <div class="parte-num">3</div>
+  <div><h2>Comunicacion con el equipo tecnico</h2><div class="parte-sub">Decision bajo presion y comunicacion al usuario afectado</div></div>
+</div>
+
+<!-- ── 8. Preguntas al tech lead ── -->
+<section class="section" id="p3-preguntas">
+  <div class="punto-label"><span class="num">8</span> Preguntas al tech lead</div>
+  <h3>Antes de decidir, pregunto</h3>
+  <p class="lead">El tech lead me dice que el fix no se puede hacer como lo especifique. Mañana se va el deploy. Antes de elegir, necesito entender.</p>
+
+  <div class="questions-grid">
+    <div class="q-card"><div class="q-num">Pregunta 1</div><p>"Cuando decis que rompemos el historial, que significa concretamente?"</p><div class="q-why">No es lo mismo perder datos que descalzar un calculo reconstruible.</div></div>
+    <div class="q-card"><div class="q-num">Pregunta 2</div><p>"Cuantos usuarios tienen combos activos hoy? Que % de transacciones pasan por combos?"</p><div class="q-why">Si combos son 5% de transacciones, opcion (a) cubre casi a todos.</div></div>
+    <div class="q-card"><div class="q-num">Pregunta 3</div><p>"La opcion (a) es un paso incremental o genera bifurcacion costosa?"</p><div class="q-why">Si (a) es escalon hacia solucion completa, perfecto. Si crea deuda acumulable, hay que pensarlo.</div></div>
+    <div class="q-card"><div class="q-num">Pregunta 4</div><p>"El workaround de front previene el stock negativo o solo lo oculta?"</p><div class="q-why">Si solo esconde el numero, el dato corrupto sigue ahi. Inaceptable.</div></div>
+    <div class="q-card" style="grid-column:1/3;"><div class="q-num">Pregunta 5</div><p>"Las 2 semanas de la opcion (b), son estimacion de alta confianza? Que riesgo de que se extienda?"</p><div class="q-why">Estimaciones bajo presion suelen ser optimistas. Si 2 semanas se convierten en 4, compromete el siguiente sprint.</div></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── 9. Decision ── -->
+<section class="section" id="p3-decision">
+  <div class="punto-label"><span class="num">9</span> Decision</div>
+  <h3>Elijo la opcion (a)</h3>
+
+  <div class="options-grid">
+    <div class="option-card chosen"><div class="option-letter">A</div><div class="option-title">Solo combos nuevos</div><div class="option-desc">Combos nuevos funcionan bien. Existentes: status quo (no empeoran).</div><div class="option-verdict">Elegida</div></div>
+    <div class="option-card rejected"><div class="option-letter">B</div><div class="option-title">Migrar todo (+2 sem)</div><div class="option-desc">Solucion completa pero retrasa deploy con estimacion incierta.</div><div class="option-verdict">Descartada</div></div>
+    <div class="option-card rejected"><div class="option-letter">C</div><div class="option-title">Workaround en front</div><div class="option-desc">Riesgo de ocultar sin resolver. Deuda tecnica sin valor real.</div><div class="option-verdict">Descartada</div></div>
+  </div>
+
+  <div class="tradeoff-box">
+    <h4>Analisis de impacto</h4>
+    <div class="tradeoff-grid">
+      <div class="tradeoff-item"><h5>Usuarios</h5><p>Combos nuevos: fix completo. Existentes: status quo. Migracion planificada para proximo sprint con approach validado.</p></div>
+      <div class="tradeoff-item"><h5>Equipo</h5><p>Deploy manana como estaba planeado. Sin crunch. Tech lead tranquilo: no tocamos historial.</p></div>
+      <div class="tradeoff-item"><h5>Negocio</h5><p>Valor parcial pero real en fecha. Capacidad de ejecucion demostrada. Roadmap sin disrupciones.</p></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── 10. Comunicacion al usuario ── -->
+<section class="section" id="p3-comms">
+  <div class="punto-label"><span class="num">10</span> Comunicacion al usuario afectado</div>
+  <h3>No espero a que se queje</h3>
+  <p class="lead">El usuario con combos existentes sigue con stock negativo despues del deploy. Le escribo antes de que se entere.</p>
+
+  <div class="email-preview">
+    <p style="color:var(--text-sec);">Hola [nombre],</p>
+    <p>Te escribo porque se que venis lidiando con el problema de stock negativo en tus combos, y quiero contarte en que estamos.</p>
+    <p>Esta semana deployamos un fix que resuelve el problema de stock negativo <strong>para combos nuevos</strong>. Si creas un combo de ahora en adelante, la sincronizacion va a funcionar correctamente.</p>
+    <p>Para los combos que ya tenes creados, todavia no pudimos aplicar el fix porque requiere una migracion de datos que necesitamos hacer con cuidado para no afectar tu historial. <strong>Estamos planificando esa migracion para las proximas 2-3 semanas.</strong></p>
+    <p>Mientras tanto, segui corrigiendolo como venias haciendo. Se que es un dolor y lamento no poder resolverlo todo de una. Te voy a avisar personalmente apenas tengamos la migracion lista.</p>
+    <p>Si tenes alguna duda, escribime.</p>
+    <p class="signature">Saludos,<br><strong>Lucas Castillo</strong> &mdash; Product Owner, Modulo de Inventario</p>
+  </div>
+
+  <div class="comm-principles">
+    <div class="comm-pill"><div class="emoji">&#128269;</div><h5>Transparencia</h5><p>Digo que hice y que no. No vendo parcial como completo.</p></div>
+    <div class="comm-pill"><div class="emoji">&#129309;</div><h5>Empatia</h5><p>Reconozco que el workaround manual sigue. No minimizo.</p></div>
+    <div class="comm-pill"><div class="emoji">&#128197;</div><h5>Compromiso</h5><p>Horizonte de 2-3 semanas y aviso personal.</p></div>
+    <div class="comm-pill"><div class="emoji">&#9997;&#65039;</div><h5>Cercania</h5><p>Firmo con nombre y rol. No es generico.</p></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer-section">
+  <p>Challenge resuelto priorizando integridad de datos sobre features, y comunicando con transparencia tanto al equipo como al usuario.</p>
+</div>
+
+<script>
+function toggleExpand(btn) {
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
+}
+
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+// Nav active on scroll
+const sects = document.querySelectorAll('section[id], .parte-header[id]');
+const navAs = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sects.forEach(s => { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
+  navAs.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + cur) a.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
